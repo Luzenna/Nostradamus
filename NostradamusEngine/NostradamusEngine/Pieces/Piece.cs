@@ -11,10 +11,17 @@ namespace NostradamusEngine.Pieces
     public abstract class Piece
     {
         
-        public Piece(Boolean isWhite, Square square)
+        public Piece(Boolean isWhite, Square square, NostradamusEngine game)
         {
             IsWhite = isWhite;
             Square = square;
+            Game = game;
+        }
+
+        public NostradamusEngine Game
+        {
+            get;
+            private set;
         }
 
         public abstract String FullName
@@ -32,13 +39,13 @@ namespace NostradamusEngine.Pieces
         public Boolean IsWhite
         {
             get;
-            set;
+            private set;
         }
 
         public Square Square
         {
             get;
-            set;
+            private set;
         }
     }
 

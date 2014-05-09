@@ -10,8 +10,8 @@ namespace NostradamusEngine.Pieces
     public class Bishop : Piece
     {
 
-        public Bishop(Boolean isWhite, Square square)
-            : base(isWhite, square)
+        public Bishop(Boolean isWhite, Square square, NostradamusEngine game)
+            : base(isWhite, square, game)
         {
 
         }

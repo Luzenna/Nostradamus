@@ -1,4 +1,5 @@
 ﻿using NostradamusEngine.Board;
+using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace NostradamusEngine
         public SimpleGui()
         {
             game = new NostradamusEngine();
-            game.LoadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            //game.LoadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            game.LoadFEN("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
         }
 
         public Boolean Update()
@@ -58,6 +60,20 @@ namespace NostradamusEngine
                             Console.Write("On {0} : {1} ( {2} )", completeCommand[1], piece.FullName, piece.IsWhite ? "White" : "Black");
                         else
                             Console.Write("No piece!");
+                        break;
+                    }
+                case "m":
+                    {
+                        var piece = game.Board[completeCommand[1]].Piece;
+                        if (piece != null)
+                        {
+                            Int32 i = 17;
+                            foreach (Move move in piece.CalculateAllMoves())
+                            {
+                                Console.SetCursorPosition(40, i++);
+                                Console.Write(move + " ");
+                            }
+                        }
                         break;
                     }
             }
