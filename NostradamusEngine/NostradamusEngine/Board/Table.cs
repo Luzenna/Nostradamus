@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NostradamusEngine.Board
+{
+    public class Table
+    {
+        private const Int32 files = 8;
+        private const Int32 ranks = 8;
+
+        private Square[,] squares;
+
+        public Table()
+        {
+            squares = new Square[files, ranks];
+            // a1 is black.
+            for (var r=0;r<ranks;r++)
+            {
+                var currentIsWhite = (r%2)==0;
+
+                for (var f=0;f<files;f++)
+                {
+                    squares[f, r] = new Square(currentIsWhite,f,r);
+                    currentIsWhite = !currentIsWhite;
+                }
+            }
+        }
+
+        public Square this[Int32 file, Int32 rank]
+        {
+            get
+            {
+                return squares[file, rank];
+            }
+        }
+
+        public Int32 Files
+        {
+            get
+            {
+                return files;
+            }
+        }
+
+        public Int32 Ranks
+        {
+            get
+            {
+                return ranks;
+            }
+        }
+
+    }
+}
