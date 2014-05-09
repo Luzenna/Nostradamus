@@ -50,15 +50,17 @@ namespace NostradamusEngine
             {
                 case "x":
                     return false;
-                case "l":
+                case "i":
                     {
-                        foreach (Move move in game.FindLegalMoves())
-                        {
-
-                        }
+                        var piece = game.Board[completeCommand[1]].Piece;
+                        Console.SetCursorPosition(40, 17);
+                        if (piece != null)
+                            Console.Write("On {0} : {1} ( {2} )", completeCommand[1], piece.FullName, piece.IsWhite ? "White" : "Black");
+                        else
+                            Console.Write("No piece!");
+                        break;
                     }
             }
-                return false;
             return true;
         }
 
@@ -91,14 +93,15 @@ namespace NostradamusEngine
             {
                 for (var y = 0; y < squareSize; y++)
                 {
-                    Console.SetCursorPosition(f * squareSize+x, r * squareSize+y);
-                    Console.WriteLine(" ");
+                     
+                    Console.SetCursorPosition(f * squareSize+x, (7-r)*squareSize+y);
+                    Console.Write((x==0 && y==0)?r.ToString() : " ");
                 }
             }
 
             if (game.Board[f, r].Piece!=null)
             {
-                Console.SetCursorPosition(f * squareSize + 1, r * squareSize + 1);
+                Console.SetCursorPosition(f * squareSize + 1, (7-r) * squareSize + 1);
                 if (game.Board[f, r].Piece.IsWhite)
                 {
                     Console.BackgroundColor = ConsoleColor.White;

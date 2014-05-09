@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NostradamusEngine.Board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,8 @@ namespace NostradamusEngine.Pieces
     public class Rook : Piece
     {
 
-        public Rook(Boolean isWhite)
-            : base(isWhite)
+        public Rook(Boolean isWhite, Square square)
+            : base(isWhite, square)
         {
 
         }
@@ -30,5 +31,11 @@ namespace NostradamusEngine.Pieces
                 return "R";
             }
         }
+
+        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

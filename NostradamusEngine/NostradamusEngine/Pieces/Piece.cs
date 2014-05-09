@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NostradamusEngine.Board;
+using NostradamusEngine.Rules;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +11,10 @@ namespace NostradamusEngine.Pieces
     public abstract class Piece
     {
         
-        public Piece(Boolean isWhite)
+        public Piece(Boolean isWhite, Square square)
         {
             IsWhite = isWhite;
+            Square = square;
         }
 
         public abstract String FullName
@@ -24,7 +27,15 @@ namespace NostradamusEngine.Pieces
             get;
         }
 
+        public abstract IEnumerable<Move> CalculateAllMoves();
+
         public Boolean IsWhite
+        {
+            get;
+            set;
+        }
+
+        public Square Square
         {
             get;
             set;
