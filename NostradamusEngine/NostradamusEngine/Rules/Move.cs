@@ -28,5 +28,36 @@ namespace NostradamusEngine.Rules
             return String.Format("{0} from {1} to {2}.  Capture : {3}", piece.FullName, from.Name, to.Name, capture==null?"None":piece.FullName);
         }
 
+        public Piece Piece
+        {
+            get
+            {
+                return piece;
+            }
+        }
+
+        public Square From
+        {
+            get
+            {
+                return from;
+            }
+        }
+
+        public Square To
+        {
+            get
+            {
+                return to;
+            }
+        }
+
+        public Piece Capture
+        {
+            get
+            {
+                return capture;
+            }
+        }
     }
 }

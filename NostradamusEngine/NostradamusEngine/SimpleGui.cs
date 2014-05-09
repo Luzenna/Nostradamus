@@ -76,6 +76,16 @@ namespace NostradamusEngine
                         }
                         break;
                     }
+                case "d":
+                    {
+                        var piece = game.Board[completeCommand[1]].Piece;
+                        var destination = game.Board[completeCommand[2]];
+                        if (piece != null)
+                        {
+                            game.Move(new Move(piece, piece.Square, destination, destination.Piece));
+                        }
+                        break;
+                    }
             }
             return true;
         }
