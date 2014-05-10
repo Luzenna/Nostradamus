@@ -21,7 +21,7 @@ namespace NostradamusEngine.Pieces
         {
             get
             {
-                return "Quuen";
+                return "Queen";
             }
         }
 
