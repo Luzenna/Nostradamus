@@ -61,9 +61,123 @@
     <Compile Include="Rules\Castling.cs" />
     <Compile Include="Rules\Move.cs" />
     <Compile Include="SimpleGui.cs" />
+    <Compile Include="WpfGui\Board.xaml.cs">
+      <DependentUpon>Board.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Main.xaml.cs">
+      <DependentUpon>Main.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\BlackBishop.xaml.cs">
+      <DependentUpon>BlackBishop.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\BlackKing.xaml.cs">
+      <DependentUpon>BlackKing.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\BlackKnight.xaml.cs">
+      <DependentUpon>BlackKnight.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\BlackPawn.xaml.cs">
+      <DependentUpon>BlackPawn.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\BlackQueen.xaml.cs">
+      <DependentUpon>BlackQueen.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\BlackRook.xaml.cs">
+      <DependentUpon>BlackRook.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\WhiteBishop.xaml.cs">
+      <DependentUpon>WhiteBishop.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\WhiteKing.xaml.cs">
+      <DependentUpon>WhiteKing.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\WhiteKnight.xaml.cs">
+      <DependentUpon>WhiteKnight.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\WhitePawn.xaml.cs">
+      <DependentUpon>WhitePawn.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\WhiteQueen.xaml.cs">
+      <DependentUpon>WhiteQueen.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WpfGui\Pieces\WhiteRook.xaml.cs">
+      <DependentUpon>WhiteRook.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="WpfGui\Board.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\BlackBishop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\BlackKing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\BlackKnight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\BlackPawn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\BlackQueen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\BlackRook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\WhiteBishop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\WhiteKing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\WhiteKnight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\WhitePawn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\WhiteQueen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WpfGui\Pieces\WhiteRook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
