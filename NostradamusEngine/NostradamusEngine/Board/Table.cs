@@ -19,7 +19,7 @@ namespace NostradamusEngine.Board
             // a1 is black.
             for (var r=0;r<ranks;r++)
             {
-                var currentIsWhite = (r%2)==0;
+                var currentIsWhite = (r%2)!=0;
 
                 for (var f=0;f<files;f++)
                 {
@@ -34,6 +34,16 @@ namespace NostradamusEngine.Board
             get
             {
                 return squares[file, rank];
+            }
+        }
+
+        public Square this[String name]
+        {
+            get
+            {
+                Int32 rank = Int32.Parse(name[1].ToString());
+                Int32 file = name[0].ToString().ToLower()[0]-97;
+                return this[file, rank-1];
             }
         }
 

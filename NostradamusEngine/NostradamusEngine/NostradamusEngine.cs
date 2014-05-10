@@ -13,17 +13,34 @@ namespace NostradamusEngine
     {
         private Table board;
         private Castling whiteCastling, blackCastling;
+        private List<Move> moves;
 
         public NostradamusEngine()
         {
             board = new Table();
             whiteCastling = new Castling();
             blackCastling = new Castling();
+            moves = new List<Move>();
         }
 
         public void LoadFEN(String fen)
         {
             FENParser.LoadFEN(this, fen);
+        }
+
+        public void Move(Move move)
+        {
+            if (IsLegalMove(move))
+                moves.Add(move);
+            move.To.Piece = move.From.Piece;
+            move.From.Piece = null;
+        }
+
+        // Supposed to check for checks and other stuff.
+        private Boolean IsLegalMove(Move move)
+        {
+            // uh-oh
+            return true;
         }
 
         public Boolean IsWhiteToMove

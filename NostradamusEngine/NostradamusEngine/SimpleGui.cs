@@ -1,4 +1,5 @@
 ﻿using NostradamusEngine.Board;
+using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace NostradamusEngine
         public SimpleGui()
         {
             game = new NostradamusEngine();
-            game.LoadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            //game.LoadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            game.LoadFEN("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
         }
 
         public Boolean Update()
@@ -50,15 +52,41 @@ namespace NostradamusEngine
             {
                 case "x":
                     return false;
-                case "l":
+                case "i":
                     {
-                        foreach (Move move in game.FindLegalMoves())
+                        var piece = game.Board[completeCommand[1]].Piece;
+                        Console.SetCursorPosition(40, 17);
+                        if (piece != null)
+                            Console.Write("On {0} : {1} ( {2} )", completeCommand[1], piece.FullName, piece.IsWhite ? "White" : "Black");
+                        else
+                            Console.Write("No piece!");
+                        break;
+                    }
+                case "m":
+                    {
+                        var piece = game.Board[completeCommand[1]].Piece;
+                        if (piece != null)
                         {
-
+                            Int32 i = 17;
+                            foreach (Move move in piece.CalculateAllMoves())
+                            {
+                                Console.SetCursorPosition(40, i++);
+                                Console.Write(move + " ");
+                            }
                         }
+                        break;
+                    }
+                case "d":
+                    {
+                        var piece = game.Board[completeCommand[1]].Piece;
+                        var destination = game.Board[completeCommand[2]];
+                        if (piece != null)
+                        {
+                            game.Move(new Move(piece, piece.Square, destination, destination.Piece));
+                        }
+                        break;
                     }
             }
-                return false;
             return true;
         }
 
@@ -91,14 +119,15 @@ namespace NostradamusEngine
             {
                 for (var y = 0; y < squareSize; y++)
                 {
-                    Console.SetCursorPosition(f * squareSize+x, r * squareSize+y);
-                    Console.WriteLine(" ");
+                     
+                    Console.SetCursorPosition(f * squareSize+x, (7-r)*squareSize+y);
+                    Console.Write((x==0 && y==0)?r.ToString() : " ");
                 }
             }
 
             if (game.Board[f, r].Piece!=null)
             {
-                Console.SetCursorPosition(f * squareSize + 1, r * squareSize + 1);
+                Console.SetCursorPosition(f * squareSize + 1, (7-r) * squareSize + 1);
                 if (game.Board[f, r].Piece.IsWhite)
                 {
                     Console.BackgroundColor = ConsoleColor.White;

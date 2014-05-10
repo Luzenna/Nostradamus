@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NostradamusEngine.Board;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace NostradamusEngine.Pieces
 {
     public class King : Piece
     {
-        public King(Boolean isWhite)
-            : base(isWhite)
+        public King(Boolean isWhite, Square square, NostradamusEngine game)
+            : base(isWhite, square, game)
         {
 
         }
@@ -30,5 +31,11 @@ namespace NostradamusEngine.Pieces
                 return "K";
             }
         }
+
+        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -56,55 +56,58 @@ namespace NostradamusEngine.IO
             for (var r=7;r>=0;r--)
             {
                 var f = 0;
+                var cPos = 0;
                 while (f<8)
                 {
-                    Int32 num =0;
-                    if (Int32.TryParse(ranks[r][f].ToString(),out num))
+                    var num =0;
+                    if (Int32.TryParse(ranks[r][cPos].ToString(),out num))
                     {
                         f+=num;
+                        cPos++;
                     }
                     else
                     {
-                        switch (ranks[r][f])
+                        switch (ranks[r][cPos])
                         {
                             case 'p':
-                                game.Board[f, r].Piece = new Pawn(false);
+                                game.Board[f, 7 - r].Piece = new Pawn(false, game.Board[f, 7 - r],game);
                                 break;
                             case 'P':
-                                game.Board[f, r].Piece = new Pawn(true);
+                                game.Board[f, 7 - r].Piece = new Pawn(true, game.Board[f, 7 - r], game);
                                 break;
                             case 'q':
-                                game.Board[f, r].Piece = new Queen(false);
+                                game.Board[f, 7 - r].Piece = new Queen(false, game.Board[f, 7 - r], game);
                                 break;
                             case 'Q':
-                                game.Board[f, r].Piece = new Queen(true);
+                                game.Board[f, 7 - r].Piece = new Queen(true, game.Board[f, 7 - r], game);
                                 break;
                             case 'k':
-                                game.Board[f, r].Piece = new King(false);
+                                game.Board[f, 7 - r].Piece = new King(false, game.Board[f, 7 - r], game);
                                 break;
                             case 'K':
-                                game.Board[f, r].Piece = new King(true);
+                                game.Board[f, 7 - r].Piece = new King(true, game.Board[f, 7 - r], game);
                                 break;
                             case 'n':
-                                game.Board[f, r].Piece = new Knight(false);
+                                game.Board[f, 7 - r].Piece = new Knight(false, game.Board[f, 7 - r], game);
                                 break;
                             case 'N':
-                                game.Board[f, r].Piece = new Knight(true);
+                                game.Board[f, 7 - r].Piece = new Knight(true, game.Board[f, 7 - r], game);
                                 break;
                             case 'r':
-                                game.Board[f, r].Piece = new Rook(false);
+                                game.Board[f, 7 - r].Piece = new Rook(false, game.Board[f, 7 - r], game);
                                 break;
                             case 'R':
-                                game.Board[f, r].Piece = new Rook(true);
+                                game.Board[f, 7 - r].Piece = new Rook(true, game.Board[f, 7 - r], game);
                                 break;
                             case 'b':
-                                game.Board[f, r].Piece = new Bishop(false);
+                                game.Board[f, 7 - r].Piece = new Bishop(false, game.Board[f, 7 - r], game);
                                 break;
                             case 'B':
-                                game.Board[f, r].Piece = new Bishop(true);
+                                game.Board[f, 7 - r].Piece = new Bishop(true, game.Board[f, 7 - r], game);
                                 break;
                         }
                         f++;
+                        cPos++;
                     }
                 }
             }
