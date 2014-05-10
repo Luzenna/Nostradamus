@@ -10,7 +10,7 @@ namespace NostradamusEngine.Pieces
     public class Rook : Piece
     {
 
-        public Rook(Boolean isWhite, Square square, NostradamusEngine game)
+        public Rook(Boolean isWhite, Square square, ChessEngine game)
             : base(isWhite, square, game)
         {
 

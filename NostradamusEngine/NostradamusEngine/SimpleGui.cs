@@ -10,12 +10,12 @@ namespace NostradamusEngine
 {
     public class SimpleGui
     {
-        private NostradamusEngine game;
+        private ChessEngine game;
         private const Int32 squareSize = 3;
 
         public SimpleGui()
         {
-            game = new NostradamusEngine();
+            game = new ChessEngine();
             //game.LoadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
             game.LoadFEN("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
         }

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace NostradamusEngine
 {
-    public class NostradamusEngine
+    public class ChessEngine
     {
         private Table board;
         private Castling whiteCastling, blackCastling;
         private List<Move> moves;
 
-        public NostradamusEngine()
+        public ChessEngine()
         {
             board = new Table();
             whiteCastling = new Castling();
