@@ -11,7 +11,7 @@ namespace NostradamusEngine.Pieces
     public class Pawn : Piece
     {
 
-        public Pawn(Boolean isWhite, Square square, NostradamusEngine game)
+        public Pawn(Boolean isWhite, Square square, ChessEngine game)
             : base(isWhite, square, game)
         {
 

@@ -1,4 +1,5 @@
-﻿using NostradamusEngine.IO;
+﻿using System.Windows;
+using NostradamusEngine.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,16 @@ namespace NostradamusEngine
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
+            var window = new Window
+            {
+                Title = "Nostradamus WpfGui",
+                Content = new WpfGui.Main()
+            };
+            window.ShowDialog();
+
             SimpleGui gui = new SimpleGui();
             while (gui.Update())
             {

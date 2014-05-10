@@ -11,14 +11,14 @@ namespace NostradamusEngine.Pieces
     public abstract class Piece
     {
         
-        public Piece(Boolean isWhite, Square square, NostradamusEngine game)
+        public Piece(Boolean isWhite, Square square, ChessEngine game)
         {
             IsWhite = isWhite;
             Square = square;
             Game = game;
         }
 
-        public NostradamusEngine Game
+        public ChessEngine Game
         {
             get;
             private set;

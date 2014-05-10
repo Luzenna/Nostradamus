@@ -9,7 +9,7 @@ namespace NostradamusEngine.IO
 {
     public static class FENParser
     {
-        public static void LoadFEN(NostradamusEngine game, String fen)
+        public static void LoadFEN(ChessEngine game, String fen)
         {
             String[] fields = fen.Split(' ');
             GetPositions(game, fields[0]);
@@ -20,7 +20,7 @@ namespace NostradamusEngine.IO
             DetermineCastling(game, fields[2]);
         }
 
-        private static void DetermineCastling(NostradamusEngine game, String castlingData)
+        private static void DetermineCastling(ChessEngine game, String castlingData)
         {
             if (castlingData=="-")
             {
@@ -50,7 +50,7 @@ namespace NostradamusEngine.IO
             }
         }
 
-        private static void GetPositions(NostradamusEngine game, String posData)
+        private static void GetPositions(ChessEngine game, String posData)
         {
             String[] ranks = posData.Split('/');
             for (var r=7;r>=0;r--)

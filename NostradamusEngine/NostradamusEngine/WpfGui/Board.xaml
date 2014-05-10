@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="NostradamusEngine.WpfGui.Board"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="600"
+             Height="600" Width="600">
+    <Grid Name="BoardGrid" AllowDrop="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Board Coordinates -->
+        <Viewbox Height="20" Grid.Row="1" Grid.Column="0" >
+            <TextBlock Text="8" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="2" Grid.Column="0" >
+            <TextBlock Text="7" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="3" Grid.Column="0" >
+            <TextBlock Text="6" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="4" Grid.Column="0" >
+            <TextBlock Text="5" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="5" Grid.Column="0" >
+            <TextBlock Text="4" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="6" Grid.Column="0" >
+            <TextBlock Text="3" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="7" Grid.Column="0" >
+            <TextBlock Text="2" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Height="20" Grid.Row="8" Grid.Column="0" >
+            <TextBlock Text="1" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        
+        <Viewbox Grid.Row="9" Grid.Column="1" >
+            <TextBlock Text="a" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="2" >
+            <TextBlock Text="b" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="3" >
+            <TextBlock Text="c" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="4" >
+            <TextBlock Text="d" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="5" >
+            <TextBlock Text="e" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="6" >
+            <TextBlock Text="f" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="7" >
+            <TextBlock Text="g" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        <Viewbox Grid.Row="9" Grid.Column="8" >
+            <TextBlock Text="h" HorizontalAlignment="Center" FontWeight="Bold" />
+        </Viewbox>
+        
+        <!-- There are 64 borders for background colors. so much easier to add them programatically for now. Should probably be here though. -->
+        
+        <!-- Border aroud playing area -->
+        <Border BorderBrush="Black" 
+                BorderThickness="3" 
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.RowSpan="10"
+                Grid.ColumnSpan="10"
+                Margin="17" />
+
+    </Grid>
+</UserControl>
