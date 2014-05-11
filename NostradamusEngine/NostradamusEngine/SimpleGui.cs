@@ -121,7 +121,8 @@ namespace NostradamusEngine
                 {
                      
                     Console.SetCursorPosition(f * squareSize+x, (7-r)*squareSize+y);
-                    Console.Write((x==0 && y==0)?r.ToString() : " ");
+                    //Console.Write((x==0 && y==0)?r.ToString() : " ");
+                    Console.Write(" ");
                 }
             }
 

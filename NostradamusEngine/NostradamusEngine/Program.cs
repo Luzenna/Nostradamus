@@ -13,12 +13,12 @@ namespace NostradamusEngine
         [STAThread]
         static void Main(string[] args)
         {
-            var window = new Window
-            {
-                Title = "Nostradamus WpfGui",
-                Content = new WpfGui.Main()
-            };
-            window.ShowDialog();
+            //var window = new Window
+            //{
+            //    Title = "Nostradamus WpfGui",
+            //    Content = new WpfGui.Main()
+            //};
+            //window.ShowDialog();
 
             SimpleGui gui = new SimpleGui();
             while (gui.Update())

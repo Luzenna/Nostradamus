@@ -31,16 +31,20 @@ namespace NostradamusEngine
         public void Move(Move move)
         {
             if (IsLegalMove(move))
+            {
                 moves.Add(move);
-            move.To.Piece = move.From.Piece;
-            move.From.Piece = null;
+                move.To.Piece = move.From.Piece;
+                move.From.Piece = null;
+            }
         }
 
         // Supposed to check for checks and other stuff.
         private Boolean IsLegalMove(Move move)
         {
             // uh-oh
-            return true;
+            if (move.Piece.IsWhite==IsWhiteToMove && move.Piece.IsLegalMove(move))
+                return true;
+            return false;
         }
 
         public Boolean IsWhiteToMove

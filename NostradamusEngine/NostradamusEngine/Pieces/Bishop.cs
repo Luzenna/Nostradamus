@@ -36,5 +36,10 @@ namespace NostradamusEngine.Pieces
         {
             throw new NotImplementedException();
         }
+
+        public override bool IsLegalMove(Rules.Move move)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
