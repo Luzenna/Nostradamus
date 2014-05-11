@@ -11,6 +11,8 @@ namespace NostradamusEngine.Pieces
     public class Pawn : Piece
     {
 
+        private Boolean isPromoted;
+
         public Pawn(Boolean isWhite, Square square, ChessEngine game)
             : base(isWhite, square, game)
         {
@@ -41,13 +43,13 @@ namespace NostradamusEngine.Pieces
             var captureqs = Game.Board[Square.File+1, Square.Rank + MoveForward];
             var captureks = Game.Board[Square.File-1, Square.Rank + MoveForward];
 
-            if (!HasMoved && doubleMoveSquare.Piece == null)
+            if (!HasMoved && doubleMoveSquare!=null && doubleMoveSquare.Piece == null)
                 yield return new Move(this, Square, doubleMoveSquare,null);
-            if (ordinaryMoveSquare.Piece == null)
+            if (ordinaryMoveSquare!=null && ordinaryMoveSquare.Piece == null)
                 yield return new Move(this, Square, ordinaryMoveSquare,null);
-            if (captureqs.Piece != null && captureqs.Piece.IsWhite!=this.IsWhite)
+            if (captureqs!=null && captureqs.Piece != null && captureqs.Piece.IsWhite!=this.IsWhite)
                 yield return new Move(this, Square, captureqs, captureqs.Piece);
-            if (captureks.Piece != null && captureks.Piece.IsWhite != this.IsWhite)
+            if (captureks!=null && captureks.Piece != null && captureks.Piece.IsWhite != this.IsWhite)
                 yield return new Move(this, Square, captureks, captureks.Piece);
         }
 
@@ -55,7 +57,7 @@ namespace NostradamusEngine.Pieces
         {
             get
             {
-                return !((IsWhite && this.Square.Rank == 1) || (!IsWhite && this.Square.Rank == 7));
+                return !((IsWhite && this.Square.Rank == 1) || (!IsWhite && this.Square.Rank == 6));
             }
         }
 
@@ -64,6 +66,24 @@ namespace NostradamusEngine.Pieces
             get
             {
                 return IsWhite ? 1 : -1;
+            }
+        }
+
+        public override bool IsLegalMove(Rules.Move move)
+        {
+            foreach (Move m in CalculateAllMoves())
+            {
+                if (move == m)
+                    return true;
+            }
+            return false;
+        }
+
+        public Boolean IsPromoted
+        {
+            get
+            {
+                return (Square.Rank==7 && IsWhite) || (Square.Rank==0 && !IsWhite);
             }
         }
 

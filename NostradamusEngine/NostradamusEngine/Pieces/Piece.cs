@@ -36,6 +36,8 @@ namespace NostradamusEngine.Pieces
 
         public abstract IEnumerable<Move> CalculateAllMoves();
 
+        public abstract Boolean IsLegalMove(Move move);
+
         public Boolean IsWhite
         {
             get;

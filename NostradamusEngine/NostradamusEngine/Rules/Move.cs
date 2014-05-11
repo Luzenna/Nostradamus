@@ -59,5 +59,16 @@ namespace NostradamusEngine.Rules
                 return capture;
             }
         }
+
+        public static bool operator ==(Move a, Move b)
+        {
+            // For now we could compare by ref, as it is the same squares and pieces.
+            return (a.Piece == b.Piece && a.From == b.From && a.To == b.To && a.Capture==b.Capture);
+        }
+
+        public static bool operator !=(Move a, Move b)
+        {
+            return !(a == b);
+        }
     }
 }
