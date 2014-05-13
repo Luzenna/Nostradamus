@@ -1,4 +1,5 @@
 ﻿using NostradamusEngine.Board;
+using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NostradamusEngine.Pieces
 {
-    public class Queen : Piece
+    public class Queen : DirectionalMovingPiece
     {
 
         public Queen(Boolean isWhite, Square square, ChessEngine game)
@@ -35,14 +36,26 @@ namespace NostradamusEngine.Pieces
 
         public override IEnumerable<Rules.Move> CalculateAllMoves()
         {
-            throw new NotImplementedException();
-        }
+            List<Rules.Move> allMoves = new List<Move>();
 
-        public override bool IsLegalMove(Rules.Move move)
-        {
-            throw new NotImplementedException();
+            // Raycast +1 +1
+            allMoves.AddRange(CalculateMoveInDirection(1, 0));
+            // Raycast +1 -1
+            allMoves.AddRange(CalculateMoveInDirection(0, 1));
+            // Raycast -1 -1
+            allMoves.AddRange(CalculateMoveInDirection(-1, 0));
+            // Raycast -1 +1
+            allMoves.AddRange(CalculateMoveInDirection(0, -1));
+            // Raycast +1 +1
+            allMoves.AddRange(CalculateMoveInDirection(1, 1));
+            // Raycast +1 -1
+            allMoves.AddRange(CalculateMoveInDirection(1, -1));
+            // Raycast -1 -1
+            allMoves.AddRange(CalculateMoveInDirection(-1, -1));
+            // Raycast -1 +1
+            allMoves.AddRange(CalculateMoveInDirection(-1, 1));
+            return allMoves;
         }
-
 
     }
 }
