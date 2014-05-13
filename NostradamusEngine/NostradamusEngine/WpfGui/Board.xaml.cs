@@ -64,6 +64,9 @@ namespace NostradamusEngine.WpfGui
         /// </summary>
         private Int32 _dropColumn, _dropRow;
 
+
+        private GuiControl _control;
+
         public Board()
         {
             InitializeComponent();
@@ -121,9 +124,10 @@ namespace NostradamusEngine.WpfGui
         /// <summary>
         /// Sets the ChessEngine to be used for this game
         /// </summary>
-        public void SetGame(ChessEngine game)
+        public void SetGame(ChessEngine game, GuiControl control)
         {
             _game = game;
+            _control = control;
         }
 
         /// <summary>
@@ -168,10 +172,7 @@ namespace NostradamusEngine.WpfGui
                     if (pieceUiType != null)
                     { 
                         var pieceUiElement = (UserControl)Activator.CreateInstance(pieceUiType);
-                        if (pieceUiType.Name == "WhitePawn")
-                        {
-                            var lol = true;
-                        }
+
                         Grid.SetColumn(pieceUiElement, f + 1);
                         Grid.SetRow(pieceUiElement, 8 - r);
                         pieceUiElement.Width = _cellSize*CellSizePercentage;
@@ -289,8 +290,8 @@ namespace NostradamusEngine.WpfGui
                 }
                 _currentPoint = e.GetPosition(null);
 
-                _transform.X += _currentPoint.X - _anchorPoint.X;
-                _transform.Y += (_currentPoint.Y - _anchorPoint.Y);
+                _transform.X += (_currentPoint.X - _anchorPoint.X) * BoardGrid.ActualWidth / _control.BoardWidth;
+                _transform.Y += (_currentPoint.Y - _anchorPoint.Y) * BoardGrid.ActualHeight / _control.BoardHeight;
                 element.RenderTransform = _transform;
                 _anchorPoint = _currentPoint;
 

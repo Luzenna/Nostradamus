@@ -6,16 +6,26 @@
              xmlns:local="clr-namespace:NostradamusEngine.WpfGui"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600"
-             Height="600" Width="620">
+             SizeChanged="Main_OnSizeChanged"
+             >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
-        <Viewbox>
+        <Viewbox x:Name="BoardViewbox">
                 <local:Board x:Name="BoardControl"/>
         </Viewbox>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ListBox Margin="0,20,5,5" ItemsSource="{Binding Moves}"></ListBox>
+            <Button Grid.Row="1" Content="FLIP BOARD" Click="Flip_Click" />
+        </Grid>
     </Grid>
 </UserControl>
