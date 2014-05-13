@@ -36,7 +36,15 @@ namespace NostradamusEngine.Pieces
 
         public abstract IEnumerable<Move> CalculateAllMoves();
 
-        public abstract Boolean IsLegalMove(Move move);
+        public virtual Boolean IsLegalMove(Move move)
+        {
+            foreach (Move m in CalculateAllMoves())
+            {
+                if (move == m)
+                    return true;
+            }
+            return false;
+        }
 
         public Boolean IsWhite
         {
@@ -47,7 +55,7 @@ namespace NostradamusEngine.Pieces
         public Square Square
         {
             get;
-            private set;
+            set;
         }
     }
 

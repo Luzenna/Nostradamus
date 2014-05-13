@@ -33,6 +33,8 @@ namespace NostradamusEngine.Board
         {
             get
             {
+                if (file >= files || rank >= ranks || file < 0 || rank < 0)
+                    return null;
                 return squares[file, rank];
             }
         }
