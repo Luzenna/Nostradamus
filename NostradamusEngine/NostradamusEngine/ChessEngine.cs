@@ -1,5 +1,6 @@
 ﻿using NostradamusEngine.Board;
 using NostradamusEngine.IO;
+using NostradamusEngine.Pieces;
 using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace NostradamusEngine
 
         public void Move(Move move)
         {
+            PromotionHappened = false;
             if (IsLegalMove(move))
             {
                 moves.Add(move);
@@ -39,7 +41,12 @@ namespace NostradamusEngine
                 // Some of this logic is probably better to put in the piece classes.
 
                 IsWhiteToMove = !IsWhiteToMove;
-
+                var pawn = move.To.Piece as Pawn;
+                if (pawn != null && pawn.IsPromoted)
+                {
+                    PromotionHappened = true;
+                    PromotedPawn = pawn;
+                }
             }
         }
 
@@ -80,6 +87,18 @@ namespace NostradamusEngine
             {
                 return whiteCastling;
             }
+        }
+
+        public Boolean PromotionHappened
+        {
+            get;
+            private set;
+        }
+
+        public Pawn PromotedPawn
+        {
+            get;
+            private set;
         }
 
     }

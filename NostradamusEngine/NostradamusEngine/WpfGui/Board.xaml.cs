@@ -263,8 +263,12 @@ namespace NostradamusEngine.WpfGui
                 var piece = (Piece) element.Tag;
                 var toSquare = _game.Board[_dropColumn, _dropRow];
                 // Check if tosquare is valid
-                if (toSquare!=null)
+                if (toSquare != null)
+                {
                     _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece));
+                    if (_game.PromotionHappened)
+                        _game.PromotedPawn.Square.Piece = new Queen(_game.PromotedPawn.IsWhite, _game.PromotedPawn.Square, _game);
+                }
                 Update();
             }
         }
