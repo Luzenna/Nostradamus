@@ -37,6 +37,9 @@ namespace NostradamusEngine
                 move.From.Piece = null;
                 move.To.Piece.Square = move.To;
                 // Some of this logic is probably better to put in the piece classes.
+
+                IsWhiteToMove = !IsWhiteToMove;
+
             }
         }
 
