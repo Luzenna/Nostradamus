@@ -1,4 +1,5 @@
 ﻿using NostradamusEngine.Board;
+using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,14 +36,33 @@ namespace NostradamusEngine.Pieces
 
         public override IEnumerable<Rules.Move> CalculateAllMoves()
         {
-            throw new NotImplementedException();
+            List<Move> allMoves = new List<Move>();
+            allMoves.AddRange(CheckSquare(2, 1));
+            allMoves.AddRange(CheckSquare(-2, 1));
+            allMoves.AddRange(CheckSquare(2, -1));
+            allMoves.AddRange(CheckSquare(-2, -1));
+            allMoves.AddRange(CheckSquare(1, 2));
+            allMoves.AddRange(CheckSquare(1, -2));
+            allMoves.AddRange(CheckSquare(-1, 2));
+            allMoves.AddRange(CheckSquare(-1, -2));
+            return allMoves;
+            
         }
 
-        public override bool IsLegalMove(Rules.Move move)
+        private IEnumerable<Rules.Move> CheckSquare(Int32 fileAdder, Int32 rankAdder)
         {
-            throw new NotImplementedException();
+            var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
+            if (squareToCheck == null)
+                yield break;
+            if (squareToCheck.Piece == null)
+            {
+                yield return new Move(this, Square, squareToCheck, null);
+            }
+            else if (squareToCheck.Piece.IsWhite != IsWhite)
+            {
+                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);
+            }
         }
-
 
     }
 }
