@@ -262,7 +262,9 @@ namespace NostradamusEngine.WpfGui
                 // Do the chess move logic
                 var piece = (Piece) element.Tag;
                 var toSquare = _game.Board[_dropColumn, _dropRow];
-                _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece));
+                // Check if tosquare is valid
+                if (toSquare!=null)
+                    _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece));
                 Update();
             }
         }

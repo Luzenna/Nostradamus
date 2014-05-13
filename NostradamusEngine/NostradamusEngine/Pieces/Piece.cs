@@ -47,7 +47,7 @@ namespace NostradamusEngine.Pieces
         public Square Square
         {
             get;
-            private set;
+            set;
         }
     }
 
