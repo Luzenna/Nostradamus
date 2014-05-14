@@ -66,6 +66,7 @@
       <DependentUpon>Board.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WpfGui\GuiControl.cs" />
     <Compile Include="WpfGui\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
       <SubType>Code</SubType>

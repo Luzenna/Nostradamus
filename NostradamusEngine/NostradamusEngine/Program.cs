@@ -16,7 +16,9 @@ namespace NostradamusEngine
             var window = new Window
             {
                 Title = "Nostradamus WpfGui",
-                Content = new WpfGui.Main()
+                Content = new WpfGui.Main(),
+                Width = 1200,
+                Height = 800
             };
             window.ShowDialog();
 
@@ -26,8 +28,8 @@ namespace NostradamusEngine
 
             //}
             //FENParser.LoadFEN(null,"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-            Console.WriteLine("Exited - any key to continue");
-            Console.ReadKey();
+            //Console.WriteLine("Exited - any key to continue");
+            //Console.ReadKey();
         }
     }
 }
