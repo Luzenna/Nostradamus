@@ -25,7 +25,7 @@ namespace NostradamusEngine.Rules
 
         public override string ToString()
         {
-            return String.Format("{0} from {1} to {2}.  Capture : {3}", piece.FullName, from.Name, to.Name, capture==null?"None":piece.FullName);
+            return String.Format("{0} from {1} to {2}.  Capture : {3}", piece.FullName, from.Name, to.Name, capture==null?"None":Capture.FullName);
         }
 
         public Piece Piece

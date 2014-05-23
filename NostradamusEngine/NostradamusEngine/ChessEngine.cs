@@ -15,6 +15,8 @@ namespace NostradamusEngine
         private Table board;
         private Castling whiteCastling, blackCastling;
         private List<Move> moves;
+        private List<Piece> pieces;
+        private List<Piece> captured;
 
         public ChessEngine()
         {
@@ -22,6 +24,8 @@ namespace NostradamusEngine
             whiteCastling = new Castling();
             blackCastling = new Castling();
             moves = new List<Move>();
+            pieces = new List<Piece>();
+            captured = new List<Piece>();
         }
 
         public void LoadFEN(String fen)
@@ -29,17 +33,32 @@ namespace NostradamusEngine
             FENParser.LoadFEN(this, fen);
         }
 
+        public void AddPiece(Piece piece)
+        {
+            pieces.Add(piece);
+        }
+
+
         public void Move(Move move)
         {
             PromotionHappened = false;
             if (IsLegalMove(move))
             {
                 moves.Add(move);
-                move.To.Piece = move.From.Piece;
-                move.From.Piece = null;
+                move.To.Piece = move.Piece;
                 move.To.Piece.Square = move.To;
-                // Some of this logic is probably better to put in the piece classes.
-
+                move.From.Piece = null;
+                if (move.Capture != null)
+                {
+                    pieces.Remove(move.Capture);
+                    captured.Add(move.Capture);
+                    move.Capture.Square = null;
+                }
+                if (PlayingIsInCheck)
+                {
+                    UndoMove(move);
+                    return;
+                }
                 IsWhiteToMove = !IsWhiteToMove;
                 var pawn = move.To.Piece as Pawn;
                 if (pawn != null && pawn.IsPromoted)
@@ -47,6 +66,32 @@ namespace NostradamusEngine
                     PromotionHappened = true;
                     PromotedPawn = pawn;
                 }
+            }
+        }
+
+        public void UndoMove(Move move)
+        {
+            move.From.Piece = move.Piece;
+            move.From.Piece.Square = move.To;
+            move.To.Piece = move.Capture;
+            moves.Remove(move);
+        }
+
+
+        // Checks wether a move is valid or if one is in check after the move.
+        private Boolean PlayingIsInCheck
+        {
+            get
+            {
+                foreach (Piece piece in pieces)
+                {
+                    foreach (Move move in piece.CalculateAllMoves() )
+                    {
+                        if (move.Capture!=null && move.Capture.ShortName == "K" && move.Capture.IsWhite == this.IsWhiteToMove)
+                            return true;
+                    }
+                }
+                return false;
             }
         }
 
