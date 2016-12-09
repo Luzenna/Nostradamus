@@ -10,9 +10,12 @@ namespace NostradamusEngine
 {
     class Program
     {
+        private static readonly log4net.ILog Log =
+            log4net.LogManager.GetLogger(typeof(Program));
         [STAThread]
         static void Main(string[] args)
         {
+            Log.Info("Starting Nostradamus");
             var window = new Window
             {
                 Title = "Nostradamus WpfGui",

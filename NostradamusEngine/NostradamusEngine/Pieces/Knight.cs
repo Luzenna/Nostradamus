@@ -70,7 +70,7 @@ namespace NostradamusEngine.Pieces
                 yield break;
             if (squareToCheck.Piece == null)
             {
-                yield return Square;
+                yield return squareToCheck;
             }
         }
 

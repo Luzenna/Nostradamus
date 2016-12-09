@@ -52,14 +52,18 @@ namespace NostradamusEngine.Set
             }
         }
 
-        public String Name
+        public string Name
         {
             get
             {
-                char fileName = (char)(file + 97);
-                return String.Format("{0}{1}", fileName, rank);
+                var fileName = (char)(file + 97);
+                return $"{fileName}{rank+1}";
             }
         }
 
+        public override string ToString()
+        {
+            return $"Square.{Name}";
+        }
     }
 }

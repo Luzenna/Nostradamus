@@ -16,6 +16,9 @@ namespace NostradamusEngine
         private readonly List<Piece> pieces;
         private readonly List<Piece> captured;
 
+        private static readonly log4net.ILog Log =
+    log4net.LogManager.GetLogger(typeof(ChessEngine));
+
         public ChessEngine()
         {
             Board = new Board();
@@ -80,9 +83,23 @@ namespace NostradamusEngine
             return toMove == Color.White ? Color.Black : Color.White;
         }
 
-        public bool SquareIsCoveredByOpponentPiece(Color color,Square square)
+        public bool SquareIsCoveredByOpponentPiece(Color color, Square square)
         {
-            return pieces.Where(x => x.Color != color).Any(opponentPiece => opponentPiece.FindCoveredSquares().Count(x => x.File==square.File && x.Rank==square.Rank) > 0);
+            Log.Debug($"Check if square {square} is covered.");
+            return
+                pieces.Where(x => x.Color != color)
+                    .Any(
+                        opponentPiece =>
+                        {
+                            Log.Debug($" - Piece {opponentPiece}");
+                            return
+                                opponentPiece.FindCoveredSquares()
+                                    .Count(x =>
+                                    {
+                                        Log.Debug($" -- Square : {x}");
+                                        return x.File == square.File && x.Rank == square.Rank;
+                                    }) > 0;
+                        });
         }
 
         // Checks wether a move is valid or if one is in check after the move.
