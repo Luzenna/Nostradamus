@@ -10,7 +10,8 @@ namespace NostradamusEngine.Pieces
 {
     public abstract class Piece
     {
-        protected readonly  List<Move> Moves;
+        // Ugly
+        public readonly  List<Move> Moves;
         public Piece(Color color, Square square, ChessEngine game)
         {
             Color = color;
@@ -18,7 +19,6 @@ namespace NostradamusEngine.Pieces
             Game = game;
             Moves = new List<Move>();
         }
-
 
         public void Move(Move m)
         {
@@ -48,14 +48,14 @@ namespace NostradamusEngine.Pieces
 
         public abstract IEnumerable<Move> CalculateAllMoves();
 
-        public virtual Boolean IsLegalMove(Move move)
+        public virtual Move IsLegalMove(Move move)
         {
             foreach (Move m in CalculateAllMoves())
             {
                 if (move == m)
-                    return true;
+                    return m;
             }
-            return false;
+            return null;
         }
 
 

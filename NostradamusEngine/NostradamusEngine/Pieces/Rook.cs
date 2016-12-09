@@ -47,19 +47,5 @@ namespace NostradamusEngine.Pieces
             allMoves.AddRange(CalculateMoveInDirection(0, -1));
             return allMoves;
         }
-
-
-
-        public override bool IsLegalMove(Rules.Move move)
-        {
-            foreach (Move m in CalculateAllMoves())
-            {
-                if (move == m)
-                    return true;
-            }
-            return false;
-        }
-
-
     }
 }

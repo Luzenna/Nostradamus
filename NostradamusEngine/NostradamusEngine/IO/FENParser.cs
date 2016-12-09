@@ -34,16 +34,16 @@ namespace NostradamusEngine.IO
                 switch (c)
                 {
                     case 'K':
-                        game.GetKing(Color.White).CanCastleKingSide = false;
+                        game.GetKing(Color.White).CanCastleKingSide = true;
                         break;
                     case 'k':
-                        game.GetKing(Color.Black).CanCastleKingSide = false;
+                        game.GetKing(Color.Black).CanCastleKingSide = true;
                         break;
                     case 'Q':
-                        game.GetKing(Color.White).CanCastleQueenSide= false;
+                        game.GetKing(Color.White).CanCastleQueenSide= true;
                         break;
                     case 'q':
-                        game.GetKing(Color.Black).CanCastleQueenSide= false;
+                        game.GetKing(Color.Black).CanCastleQueenSide= true;
                         break;
 
                 }

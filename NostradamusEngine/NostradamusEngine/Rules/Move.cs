@@ -22,6 +22,21 @@ namespace NostradamusEngine.Rules
             _capture = capture;
         }
 
+        public virtual void Do()
+        {
+            To.Piece = Piece;
+            To.Piece.Square = To;
+            From.Piece = null;
+        }
+
+        public virtual void Undo()
+        {
+            From.Piece = Piece;
+            From.Piece.Square = To;
+            To.Piece = Capture;
+        }
+
+
         public override string ToString()
         {
             return
@@ -38,6 +53,11 @@ namespace NostradamusEngine.Rules
 
         public static bool operator ==(Move a, Move b)
         {
+            // This is not enough
+            if (object.ReferenceEquals(b,null) && object.ReferenceEquals(a,null)) return true;
+            if (object.ReferenceEquals(b, null)) return false;
+            if (object.ReferenceEquals(a, null)) return false;
+
             // For now we could compare by ref, as it is the same squares and pieces.
             return (a.Piece == b.Piece && a.From == b.From && a.To == b.To && a.Capture==b.Capture);
         }

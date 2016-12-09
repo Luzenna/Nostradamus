@@ -35,7 +35,32 @@ namespace NostradamusEngine.Pieces
             allMoves.AddRange(CheckSquare(-1, 1));
             allMoves.AddRange(CheckSquare(0, 1));
             allMoves.AddRange(CheckSquare(1, 1));
+            if (IsKingSideCastlePossible)
+                allMoves.Add(new CastlingMove(this,Square,Game.Board[6,Square.Rank],Game.Board[7,Square.Rank].Piece,Game.Board[7,Square.Rank],Game.Board[5,Square.Rank]));
+            if (IsQueenSideCastlePossible)
+                allMoves.Add(new CastlingMove(this, Square, Game.Board[2, Square.Rank], Game.Board[0, Square.Rank].Piece, Game.Board[0, Square.Rank], Game.Board[3, Square.Rank]));
+
             return allMoves;
+        }
+
+        private bool IsQueenSideCastlePossible
+        {
+            get
+            {
+                if (!CanCastleQueenSide) return false;
+                if (Game.Board[0, Square.Rank].Piece!=null && Game.Board[0, Square.Rank].Piece.Moves.Count == 0 && Game.Board[1,Square.Rank].Piece==null && Game.Board[2,Square.Rank].Piece==null) return true;
+                return false;
+            }
+        }
+
+        private bool IsKingSideCastlePossible
+        {
+            get
+            {
+                if (!CanCastleQueenSide) return false;
+                if (Game.Board[7, Square.Rank].Piece!=null && Game.Board[7, Square.Rank].Piece.Moves.Count == 0 && Game.Board[5, Square.Rank].Piece == null && Game.Board[6, Square.Rank].Piece == null) return true;
+                return false;
+            }
         }
 
         private IEnumerable<Rules.Move> CheckSquare(int fileAdder, int rankAdder)

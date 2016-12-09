@@ -56,16 +56,6 @@ namespace NostradamusEngine.Pieces
 
         private Int32 MoveForward => Color==Color.White ? 1 : -1;
 
-        public override bool IsLegalMove(Rules.Move move)
-        {
-            foreach (Move m in CalculateAllMoves())
-            {
-                if (move == m)
-                    return true;
-            }
-            return false;
-        }
-
         public Boolean IsPromoted => (Square.Rank==7 && Color==Color.White) || (Square.Rank==0 && Color==Color.Black);
     }
 }
