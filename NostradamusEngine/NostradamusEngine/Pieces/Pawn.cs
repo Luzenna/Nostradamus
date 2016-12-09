@@ -1,10 +1,10 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
+﻿using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Pieces
 {
@@ -13,8 +13,8 @@ namespace NostradamusEngine.Pieces
 
         private Boolean isPromoted;
 
-        public Pawn(Boolean isWhite, Square square, ChessEngine game)
-            : base(isWhite, square, game)
+        public Pawn(Color color, Square square, ChessEngine game)
+            : base(color, square, game)
         {
 
         }
@@ -43,31 +43,18 @@ namespace NostradamusEngine.Pieces
             var captureqs = Game.Board[Square.File+1, Square.Rank + MoveForward];
             var captureks = Game.Board[Square.File-1, Square.Rank + MoveForward];
 
-            if (!HasMoved && doubleMoveSquare!=null && doubleMoveSquare.Piece == null)
+            if (Moves.Count==0 && doubleMoveSquare!=null && doubleMoveSquare.Piece == null)
                 yield return new Move(this, Square, doubleMoveSquare,null);
             if (ordinaryMoveSquare!=null && ordinaryMoveSquare.Piece == null)
                 yield return new Move(this, Square, ordinaryMoveSquare,null);
-            if (captureqs!=null && captureqs.Piece != null && captureqs.Piece.IsWhite!=this.IsWhite)
+            if (captureqs!=null && captureqs.Piece != null && captureqs.Piece.Color!=this.Color)
                 yield return new Move(this, Square, captureqs, captureqs.Piece);
-            if (captureks!=null && captureks.Piece != null && captureks.Piece.IsWhite != this.IsWhite)
+            if (captureks!=null && captureks.Piece != null && captureks.Piece.Color != this.Color)
                 yield return new Move(this, Square, captureks, captureks.Piece);
         }
 
-        private Boolean HasMoved
-        {
-            get
-            {
-                return !((IsWhite && this.Square.Rank == 1) || (!IsWhite && this.Square.Rank == 6));
-            }
-        }
 
-        private Int32 MoveForward
-        {
-            get
-            {
-                return IsWhite ? 1 : -1;
-            }
-        }
+        private Int32 MoveForward => Color==Color.White ? 1 : -1;
 
         public override bool IsLegalMove(Rules.Move move)
         {
@@ -79,13 +66,6 @@ namespace NostradamusEngine.Pieces
             return false;
         }
 
-        public Boolean IsPromoted
-        {
-            get
-            {
-                return (Square.Rank==7 && IsWhite) || (Square.Rank==0 && !IsWhite);
-            }
-        }
-
+        public Boolean IsPromoted => (Square.Rank==7 && Color==Color.White) || (Square.Rank==0 && Color==Color.Black);
     }
 }

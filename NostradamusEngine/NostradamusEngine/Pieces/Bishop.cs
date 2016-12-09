@@ -1,18 +1,18 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
+﻿using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Pieces
 {
     public class Bishop : DirectionalMovingPiece
     {
 
-        public Bishop(Boolean isWhite, Square square, ChessEngine game)
-            : base(isWhite, square, game)
+        public Bishop(Color color, Square square, ChessEngine game)
+            : base(color, square, game)
         {
 
         }

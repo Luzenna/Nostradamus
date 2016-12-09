@@ -1,11 +1,7 @@
-﻿using NostradamusEngine.Pieces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using NostradamusEngine.Pieces;
 
-namespace NostradamusEngine.Board
+namespace NostradamusEngine.Set
 {
     public class Square
     {

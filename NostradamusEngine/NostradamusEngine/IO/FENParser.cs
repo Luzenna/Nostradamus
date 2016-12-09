@@ -14,9 +14,9 @@ namespace NostradamusEngine.IO
             String[] fields = fen.Split(' ');
             GetPositions(game, fields[0]);
             if (fields[1] == "w")
-                game.IsWhiteToMove = true;
+                game.ToMove = Color.White;
             else
-                game.IsWhiteToMove = false;
+                game.ToMove = Color.Black;
             DetermineCastling(game, fields[2]);
         }
 
@@ -24,35 +24,35 @@ namespace NostradamusEngine.IO
         {
             if (castlingData=="-")
             {
-                game.BlackCastling.Kingside=false;
-                game.BlackCastling.Queenside=false;
-                game.WhiteCastling.Queenside=false;
-                game.WhiteCastling.Kingside=false;
+                game.GetKing(Color.Black).CanCastleKingSide=false;
+                game.GetKing(Color.Black).CanCastleQueenSide = false;
+                game.GetKing(Color.White).CanCastleKingSide = false;
+                game.GetKing(Color.White).CanCastleQueenSide = false;
             }
             foreach (char c in castlingData)
             {
                 switch (c)
                 {
                     case 'K':
-                        game.WhiteCastling.Kingside=true;
+                        game.GetKing(Color.White).CanCastleKingSide = false;
                         break;
                     case 'k':
-                        game.BlackCastling.Kingside=true;
+                        game.GetKing(Color.Black).CanCastleKingSide = false;
                         break;
                     case 'Q':
-                        game.WhiteCastling.Queenside=true;
+                        game.GetKing(Color.White).CanCastleQueenSide= false;
                         break;
                     case 'q':
-                        game.BlackCastling.Queenside=true;
+                        game.GetKing(Color.Black).CanCastleQueenSide= false;
                         break;
 
                 }
             }
         }
 
-        private static void GetPositions(ChessEngine game, String posData)
+        private static void GetPositions(ChessEngine game, string posData)
         {
-            String[] ranks = posData.Split('/');
+            var ranks = posData.Split('/');
             for (var r=7;r>=0;r--)
             {
                 var f = 0;
@@ -70,61 +70,61 @@ namespace NostradamusEngine.IO
                         switch (ranks[r][cPos])
                         {
                             case 'p':
-                                game.Board[f, 7 - r].Piece = new Pawn(false, game.Board[f, 7 - r],game);
+                                game.Board[f, 7 - r].Piece = new Pawn(Color.Black, game.Board[f, 7 - r],game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
                                 break;
                             case 'P':
-                                game.Board[f, 7 - r].Piece = new Pawn(true, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Pawn(Color.White, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'q':
-                                game.Board[f, 7 - r].Piece = new Queen(false, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Queen(Color.Black, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'Q':
-                                game.Board[f, 7 - r].Piece = new Queen(true, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Queen(Color.White, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'k':
-                                game.Board[f, 7 - r].Piece = new King(false, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new King(Color.Black, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'K':
-                                game.Board[f, 7 - r].Piece = new King(true, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new King(Color.White, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'n':
-                                game.Board[f, 7 - r].Piece = new Knight(false, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Knight(Color.Black, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'N':
-                                game.Board[f, 7 - r].Piece = new Knight(true, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Knight(Color.White, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'r':
-                                game.Board[f, 7 - r].Piece = new Rook(false, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Rook(Color.Black, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'R':
-                                game.Board[f, 7 - r].Piece = new Rook(true, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Rook(Color.White, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'b':
-                                game.Board[f, 7 - r].Piece = new Bishop(false, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Bishop(Color.Black, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;
                             case 'B':
-                                game.Board[f, 7 - r].Piece = new Bishop(true, game.Board[f, 7 - r], game);
+                                game.Board[f, 7 - r].Piece = new Bishop(Color.White, game.Board[f, 7 - r], game);
                                 game.AddPiece(game.Board[f, 7 - r].Piece);
 
                                 break;

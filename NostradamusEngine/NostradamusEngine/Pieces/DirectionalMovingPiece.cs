@@ -1,17 +1,17 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
+﻿using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Pieces
 {
     public abstract class DirectionalMovingPiece : Piece
     {
-        public DirectionalMovingPiece(Boolean isWhite, Square square, ChessEngine game )
-            :base(isWhite,square,game)
+        protected DirectionalMovingPiece(Color color, Square square, ChessEngine game )
+            :base(color,square,game)
         { }
         
 
@@ -31,9 +31,9 @@ namespace NostradamusEngine.Pieces
                 {
                     yield return new Move(this, Square, squareToCheck, null);
                 }
-                else if (squareToCheck.Piece.IsWhite == IsWhite)
+                else if (squareToCheck.Piece.Color == Color)
                     stoppedSearching = true;
-                else if (squareToCheck.Piece.IsWhite != IsWhite)
+                else if (squareToCheck.Piece.Color != Color)
                 {
                     stoppedSearching = true;
                     yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);

@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NostradamusEngine.Board
+namespace NostradamusEngine.Set
 {
-    public class Table
+    public class Board
     {
-        private const Int32 files = 8;
-        private const Int32 ranks = 8;
+        private const int files = 8;
+        private const int ranks = 8;
 
-        private Square[,] squares;
+        private readonly Square[,] _squares;
 
-        public Table()
+        public Board()
         {
-            squares = new Square[files, ranks];
+            _squares = new Square[files, ranks];
             // a1 is black.
             for (var r=0;r<ranks;r++)
             {
@@ -23,7 +19,7 @@ namespace NostradamusEngine.Board
 
                 for (var f=0;f<files;f++)
                 {
-                    squares[f, r] = new Square(currentIsWhite,f,r);
+                    _squares[f, r] = new Square(currentIsWhite,f,r);
                     currentIsWhite = !currentIsWhite;
                 }
             }
@@ -35,11 +31,11 @@ namespace NostradamusEngine.Board
             {
                 if (file >= files || rank >= ranks || file < 0 || rank < 0)
                     return null;
-                return squares[file, rank];
+                return _squares[file, rank];
             }
         }
 
-        public Square this[String name]
+        public Square this[string name]
         {
             get
             {

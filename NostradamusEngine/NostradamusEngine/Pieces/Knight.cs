@@ -1,18 +1,18 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
+﻿using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Pieces
 {
     public class Knight : Piece
     {
 
-        public Knight(Boolean isWhite, Square square, ChessEngine game)
-            : base(isWhite, square, game)
+        public Knight(Color color, Square square, ChessEngine game)
+            : base(color, square, game)
         {
 
         }
@@ -58,7 +58,7 @@ namespace NostradamusEngine.Pieces
             {
                 yield return new Move(this, Square, squareToCheck, null);
             }
-            else if (squareToCheck.Piece.IsWhite != IsWhite)
+            else if (squareToCheck.Piece.Color != this.Color)
             {
                 yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);
             }

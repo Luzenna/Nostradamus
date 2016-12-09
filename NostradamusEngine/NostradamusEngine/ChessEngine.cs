@@ -1,5 +1,4 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.IO;
+﻿using NostradamusEngine.IO;
 using NostradamusEngine.Pieces;
 using NostradamusEngine.Rules;
 using System;
@@ -7,22 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine
 {
     public class ChessEngine
     {
-        private Table board;
-        private Castling whiteCastling, blackCastling;
+        private Board board;
         private List<Move> moves;
         private List<Piece> pieces;
         private List<Piece> captured;
 
         public ChessEngine()
         {
-            board = new Table();
-            whiteCastling = new Castling();
-            blackCastling = new Castling();
+            board = new Board();
             moves = new List<Move>();
             pieces = new List<Piece>();
             captured = new List<Piece>();
@@ -59,7 +56,7 @@ namespace NostradamusEngine
                     UndoMove(move);
                     return;
                 }
-                IsWhiteToMove = !IsWhiteToMove;
+                ToMove = SwitchColor(ToMove);
                 var pawn = move.To.Piece as Pawn;
                 if (pawn != null && pawn.IsPromoted)
                 {
@@ -67,6 +64,21 @@ namespace NostradamusEngine
                     PromotedPawn = pawn;
                 }
             }
+        }
+
+        public IEnumerable<Piece> GetPiecesOfType<T>(Color color) where T : Piece
+        {
+            return pieces.Where(x => x is T && x.Color == color);
+        }
+
+        public King GetKing(Color color)
+        {
+            return (King) GetPiecesOfType<King>(color).First();
+        }
+
+        private Color SwitchColor(Color toMove)
+        {
+            return toMove == Color.White ? Color.Black : Color.White;
         }
 
         public void UndoMove(Move move)
@@ -87,7 +99,7 @@ namespace NostradamusEngine
                 {
                     foreach (Move move in piece.CalculateAllMoves() )
                     {
-                        if (move.Capture!=null && move.Capture.ShortName == "K" && move.Capture.IsWhite == this.IsWhiteToMove)
+                        if (move.Capture!=null && move.Capture.ShortName == "K" && move.Capture.Color == this.ToMove)
                             return true;
                     }
                 }
@@ -96,41 +108,25 @@ namespace NostradamusEngine
         }
 
         // Supposed to check for checks and other stuff.
-        private Boolean IsLegalMove(Move move)
+        private bool IsLegalMove(Move move)
         {
             // uh-oh
-            if (move.Piece.IsWhite==IsWhiteToMove && move.Piece.IsLegalMove(move))
+            if (move.Piece.Color==ToMove && move.Piece.IsLegalMove(move))
                 return true;
             return false;
         }
 
-        public Boolean IsWhiteToMove
+        public Color ToMove
         {
             get;
             set;
         }
 
-        public Table Board
+        public Board Board
         {
             get
             {
                 return board;
-            }
-        }
-
-        public Castling BlackCastling
-        {
-            get
-            {
-                return blackCastling;
-            }
-        }
-
-        public Castling WhiteCastling
-        {
-            get
-            {
-                return whiteCastling;
             }
         }
 

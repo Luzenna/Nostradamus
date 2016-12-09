@@ -1,64 +1,40 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Pieces;
+﻿using NostradamusEngine.Pieces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Rules
 {
     public class Move
     {
-        private Piece piece;
-        private Square from;
-        private Square to;
-        private Piece capture;
+        private readonly Square _from;
+        private readonly Square _to;
+        private readonly Piece _capture;
 
         public Move(Piece piece, Square from, Square to, Piece capture)
         {
-            this.piece = piece;
-            this.from = from;
-            this.to = to;
-            this.capture = capture;
+            Piece = piece;
+            _from = from;
+            _to = to;
+            _capture = capture;
         }
 
         public override string ToString()
         {
-            return String.Format("{0} from {1} to {2}.  Capture : {3}", piece.FullName, from.Name, to.Name, capture==null?"None":Capture.FullName);
+            return
+                $"{Piece.FullName} from {_from.Name} to {_to.Name}.  Capture : {(_capture == null ? "None" : Capture.FullName)}";
         }
 
-        public Piece Piece
-        {
-            get
-            {
-                return piece;
-            }
-        }
+        public Piece Piece { get; }
 
-        public Square From
-        {
-            get
-            {
-                return from;
-            }
-        }
+        public Square From => _from;
 
-        public Square To
-        {
-            get
-            {
-                return to;
-            }
-        }
+        public Square To => _to;
 
-        public Piece Capture
-        {
-            get
-            {
-                return capture;
-            }
-        }
+        public Piece Capture => _capture;
 
         public static bool operator ==(Move a, Move b)
         {

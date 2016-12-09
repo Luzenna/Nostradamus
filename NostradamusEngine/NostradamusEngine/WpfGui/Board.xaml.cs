@@ -5,9 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using NostradamusEngine.Board;
 using NostradamusEngine.Pieces;
 using NostradamusEngine.Rules;
+using Color = System.Windows.Media.Color;
 
 namespace NostradamusEngine.WpfGui
 {
@@ -156,15 +156,7 @@ namespace NostradamusEngine.WpfGui
                     }
 
                     // ToDo: Find another method of adding the pieces. This is ugly.
-                    var pieceTypeName = "NostradamusEngine.WpfGui.Pieces.";
-                    if (piece.IsWhite)
-                    {
-                        pieceTypeName += "White";
-                    }
-                    else
-                    {
-                        pieceTypeName += "Black";
-                    }
+                    var pieceTypeName = $"NostradamusEngine.WpfGui.Pieces.{piece.Color}";
                     pieceTypeName += piece.FullName;
 
                     // Nooo! Reflection :( I MUST FIND ANOTHER WAY
@@ -268,7 +260,7 @@ namespace NostradamusEngine.WpfGui
                 {
                     _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece));
                     if (_game.PromotionHappened)
-                        _game.PromotedPawn.Square.Piece = new Queen(_game.PromotedPawn.IsWhite, _game.PromotedPawn.Square, _game);
+                        _game.PromotedPawn.Square.Piece = new Queen(_game.PromotedPawn.Color, _game.PromotedPawn.Square, _game);
                 }
                 Update();
             }
