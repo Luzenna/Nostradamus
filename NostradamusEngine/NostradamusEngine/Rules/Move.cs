@@ -14,9 +14,10 @@ namespace NostradamusEngine.Rules
         private readonly Square _to;
         private readonly Piece _capture;
 
-        public Move(Piece piece, Square from, Square to, Piece capture)
+        public Move(Piece piece, Square from, Square to, Piece capture, int ply)
         {
             Piece = piece;
+            Ply = ply;
             _from = from;
             _to = to;
             _capture = capture;
@@ -24,6 +25,7 @@ namespace NostradamusEngine.Rules
 
         public virtual void Do()
         {
+            Piece.Move(this);
             To.Piece = Piece;
             To.Piece.Square = To;
             From.Piece = null;
@@ -31,6 +33,7 @@ namespace NostradamusEngine.Rules
 
         public virtual void Undo()
         {
+            Piece.UndoMove(this);
             From.Piece = Piece;
             From.Piece.Square = To;
             To.Piece = Capture;
@@ -44,6 +47,7 @@ namespace NostradamusEngine.Rules
         }
 
         public Piece Piece { get; }
+        public int Ply { get; set; }
 
         public Square From => _from;
 
@@ -59,7 +63,7 @@ namespace NostradamusEngine.Rules
             if (object.ReferenceEquals(a, null)) return false;
 
             // For now we could compare by ref, as it is the same squares and pieces.
-            return (a.Piece == b.Piece && a.From == b.From && a.To == b.To && a.Capture==b.Capture);
+            return (a.Piece == b.Piece && a.From == b.From && a.To == b.To);
         }
 
         public static bool operator !=(Move a, Move b)

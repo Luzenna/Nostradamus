@@ -15,6 +15,7 @@ namespace NostradamusEngine
         private readonly List<Move> moves;
         private readonly List<Piece> pieces;
         private readonly List<Piece> captured;
+        private int _currentPly = 0;
 
         private static readonly log4net.ILog Log =
     log4net.LogManager.GetLogger(typeof(ChessEngine));
@@ -46,6 +47,7 @@ namespace NostradamusEngine
             {
                 moves.Add(correctMove);
                 correctMove.Do();
+                _currentPly++;
                 if (correctMove.Capture != null)
                 {
                     pieces.Remove(correctMove.Capture);
@@ -54,6 +56,7 @@ namespace NostradamusEngine
                 }
                 if (PlayingIsInCheck)
                 {
+                    _currentPly--;
                     correctMove.Undo();
                     moves.Remove(correctMove);
                     return;
@@ -107,15 +110,8 @@ namespace NostradamusEngine
         {
             get
             {
-                foreach (var piece in pieces)
-                {
-                    foreach (var move in piece.CalculateAllMoves() )
-                    {
-                        if (move.Capture!=null && move.Capture.ShortName == "K" && move.Capture.Color == this.ToMove)
-                            return true;
-                    }
-                }
-                return false;
+                var playingKing = GetKing(ToMove);
+                return SquareIsCoveredByOpponentPiece(Opponent, playingKing.Square);
             }
         }
 
@@ -123,7 +119,7 @@ namespace NostradamusEngine
         private Move IsLegalMove(Move move)
         {
             // uh-oh
-            var correctMove = move.Piece.IsLegalMove(move);
+            var correctMove = move.Piece.IsLegalMove(move,_currentPly);
             if (move.Piece.Color==ToMove && correctMove!=null)
                 return correctMove;
             return null;
@@ -133,6 +129,15 @@ namespace NostradamusEngine
         {
             get;
             set;
+        }
+
+        public Color Opponent
+        {
+            get
+            {
+                if (ToMove == Color.White) return Color.Black;
+                return Color.White;
+            }
         }
 
         public Board Board { get; }

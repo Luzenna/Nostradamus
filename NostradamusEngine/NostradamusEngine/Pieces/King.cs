@@ -38,21 +38,21 @@ namespace NostradamusEngine.Pieces
             return coveredSquares;
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        public override IEnumerable<Rules.Move> CalculateAllMoves(int ply)
         {
             var allMoves = new List<Move>();
-            allMoves.AddRange(CheckMove(-1, -1));
-            allMoves.AddRange(CheckMove(0, -1));
-            allMoves.AddRange(CheckMove(1, -1));
-            allMoves.AddRange(CheckMove(-1, 0));
-            allMoves.AddRange( CheckMove(1, 0));
-            allMoves.AddRange(CheckMove(-1, 1));
-            allMoves.AddRange(CheckMove(0, 1));
-            allMoves.AddRange(CheckMove(1, 1));
+            allMoves.AddRange(CheckMove(-1, -1, ply));
+            allMoves.AddRange(CheckMove(0, -1, ply));
+            allMoves.AddRange(CheckMove(1, -1, ply));
+            allMoves.AddRange(CheckMove(-1, 0, ply));
+            allMoves.AddRange( CheckMove(1, 0, ply));
+            allMoves.AddRange(CheckMove(-1, 1, ply));
+            allMoves.AddRange(CheckMove(0, 1, ply));
+            allMoves.AddRange(CheckMove(1, 1, ply));
             if (IsKingSideCastlePossible)
-                allMoves.Add(new CastlingMove(this,Square,Game.Board[6,Square.Rank],Game.Board[7,Square.Rank].Piece,Game.Board[7,Square.Rank],Game.Board[5,Square.Rank]));
+                allMoves.Add(new CastlingMove(this,Square,Game.Board[6,Square.Rank],Game.Board[7,Square.Rank].Piece,Game.Board[7,Square.Rank],Game.Board[5,Square.Rank],ply));
             if (IsQueenSideCastlePossible)
-                allMoves.Add(new CastlingMove(this, Square, Game.Board[2, Square.Rank], Game.Board[0, Square.Rank].Piece, Game.Board[0, Square.Rank], Game.Board[3, Square.Rank]));
+                allMoves.Add(new CastlingMove(this, Square, Game.Board[2, Square.Rank], Game.Board[0, Square.Rank].Piece, Game.Board[0, Square.Rank], Game.Board[3, Square.Rank],ply));
 
             return allMoves;
         }
@@ -97,18 +97,18 @@ namespace NostradamusEngine.Pieces
             }
         }
 
-        private IEnumerable<Rules.Move> CheckMove(int fileAdder, int rankAdder)
+        private IEnumerable<Rules.Move> CheckMove(int fileAdder, int rankAdder, int ply)
         {
             var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
             if (squareToCheck == null)
                 yield break;    
             if (squareToCheck.Piece == null)
             {
-                yield return new Move(this, Square, squareToCheck, null);
+                yield return new Move(this, Square, squareToCheck, null,ply);
             }
             else if (squareToCheck.Piece.Color != this.Color)
             {
-                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);
+                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece,ply);
             }
         }
     }

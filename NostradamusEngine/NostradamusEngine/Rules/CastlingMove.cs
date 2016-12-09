@@ -14,7 +14,7 @@ namespace NostradamusEngine.Rules
         private readonly Square _rookfrom;
         private readonly Square _rookto;
 
-        public CastlingMove(Piece king, Square from, Square to, Piece rook,Square rookfrom, Square rookto) : base(king, from, to, null)
+        public CastlingMove(Piece king, Square from, Square to, Piece rook,Square rookfrom, Square rookto,int ply) : base(king, from, to, null,ply)
         {
             _rook = rook;
             _rookfrom = rookfrom;
@@ -23,12 +23,14 @@ namespace NostradamusEngine.Rules
 
         public override void Do()
         {
+            Piece.Move(this);
             DoForOne(Piece,From,To);
             DoForOne(_rook,_rookfrom,_rookto);
         }
 
         public override void Undo()
         {
+            Piece.UndoMove(this);
             UndoForOne(Piece,From,To);
             UndoForOne(_rook,_rookfrom,_rookto);
         }

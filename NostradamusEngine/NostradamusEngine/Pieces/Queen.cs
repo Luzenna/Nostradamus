@@ -57,26 +57,26 @@ namespace NostradamusEngine.Pieces
             return allMoves;
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        public override IEnumerable<Rules.Move> CalculateAllMoves(int ply)
         {
             List<Rules.Move> allMoves = new List<Move>();
 
             // Raycast +1 +1
-            allMoves.AddRange(CalculateMoveInDirection(1, 0));
+            allMoves.AddRange(CalculateMoveInDirection(1, 0, ply));
             // Raycast +1 -1
-            allMoves.AddRange(CalculateMoveInDirection(0, 1));
+            allMoves.AddRange(CalculateMoveInDirection(0, 1, ply));
             // Raycast -1 -1
-            allMoves.AddRange(CalculateMoveInDirection(-1, 0));
+            allMoves.AddRange(CalculateMoveInDirection(-1, 0, ply));
             // Raycast -1 +1
-            allMoves.AddRange(CalculateMoveInDirection(0, -1));
+            allMoves.AddRange(CalculateMoveInDirection(0, -1, ply));
             // Raycast +1 +1
-            allMoves.AddRange(CalculateMoveInDirection(1, 1));
+            allMoves.AddRange(CalculateMoveInDirection(1, 1, ply));
             // Raycast +1 -1
-            allMoves.AddRange(CalculateMoveInDirection(1, -1));
+            allMoves.AddRange(CalculateMoveInDirection(1, -1, ply));
             // Raycast -1 -1
-            allMoves.AddRange(CalculateMoveInDirection(-1, -1));
+            allMoves.AddRange(CalculateMoveInDirection(-1, -1, ply));
             // Raycast -1 +1
-            allMoves.AddRange(CalculateMoveInDirection(-1, 1));
+            allMoves.AddRange(CalculateMoveInDirection(-1, 1, ply));
             return allMoves;
         }
 

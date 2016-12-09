@@ -48,17 +48,17 @@ namespace NostradamusEngine.Pieces
             return allMoves;
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        public override IEnumerable<Rules.Move> CalculateAllMoves(int ply)
         {
             List<Move> allMoves = new List<Move>();
-            allMoves.AddRange(CheckSquare(2, 1));
-            allMoves.AddRange(CheckSquare(-2, 1));
-            allMoves.AddRange(CheckSquare(2, -1));
-            allMoves.AddRange(CheckSquare(-2, -1));
-            allMoves.AddRange(CheckSquare(1, 2));
-            allMoves.AddRange(CheckSquare(1, -2));
-            allMoves.AddRange(CheckSquare(-1, 2));
-            allMoves.AddRange(CheckSquare(-1, -2));
+            allMoves.AddRange(CheckSquare(2, 1, ply));
+            allMoves.AddRange(CheckSquare(-2, 1, ply));
+            allMoves.AddRange(CheckSquare(2, -1, ply));
+            allMoves.AddRange(CheckSquare(-2, -1, ply));
+            allMoves.AddRange(CheckSquare(1, 2, ply));
+            allMoves.AddRange(CheckSquare(1, -2, ply));
+            allMoves.AddRange(CheckSquare(-1, 2, ply));
+            allMoves.AddRange(CheckSquare(-1, -2, ply));
             return allMoves;
             
         }
@@ -74,18 +74,18 @@ namespace NostradamusEngine.Pieces
             }
         }
 
-        private IEnumerable<Rules.Move> CheckSquare(Int32 fileAdder, Int32 rankAdder)
+        private IEnumerable<Rules.Move> CheckSquare(Int32 fileAdder, Int32 rankAdder, int ply)
         {
             var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
             if (squareToCheck == null)
                 yield break;
             if (squareToCheck.Piece == null)
             {
-                yield return new Move(this, Square, squareToCheck, null);
+                yield return new Move(this, Square, squareToCheck, null,ply);
             }
             else if (squareToCheck.Piece.Color != this.Color)
             {
-                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);
+                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece,ply);
             }
         }
 

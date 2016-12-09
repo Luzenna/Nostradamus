@@ -258,7 +258,7 @@ namespace NostradamusEngine.WpfGui
                 // Check if tosquare is valid
                 if (toSquare != null)
                 {
-                    _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece));
+                    _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece,0));
                     if (_game.PromotionHappened)
                         _game.PromotedPawn.Square.Piece = new Queen(_game.PromotedPawn.Color, _game.PromotedPawn.Square, _game);
                 }

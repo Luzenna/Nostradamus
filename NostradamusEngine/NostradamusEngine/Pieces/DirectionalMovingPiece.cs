@@ -37,7 +37,7 @@ namespace NostradamusEngine.Pieces
             }
         }
 
-        protected IEnumerable<Rules.Move> CalculateMoveInDirection(Int32 fileAddition, Int32 rankAddition)
+        protected IEnumerable<Rules.Move> CalculateMoveInDirection(Int32 fileAddition, Int32 rankAddition, int ply)
         {
             var stoppedSearching = false;
             Int32 fileAdder = fileAddition, rankAdder = rankAddition;
@@ -51,14 +51,14 @@ namespace NostradamusEngine.Pieces
                 }
                 else if (squareToCheck.Piece == null)
                 {
-                    yield return new Move(this, Square, squareToCheck, null);
+                    yield return new Move(this, Square, squareToCheck, null,ply);
                 }
                 else if (squareToCheck.Piece.Color == Color)
                     stoppedSearching = true;
                 else if (squareToCheck.Piece.Color != Color)
                 {
                     stoppedSearching = true;
-                    yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);
+                    yield return new Move(this, Square, squareToCheck, squareToCheck.Piece,ply);
                 }
                 fileAdder += fileAddition;
                 rankAdder += rankAddition;

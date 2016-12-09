@@ -49,11 +49,11 @@ namespace NostradamusEngine.Pieces
 
         public abstract IEnumerable<Square> FindCoveredSquares();
 
-        public abstract IEnumerable<Move> CalculateAllMoves();
+        public abstract IEnumerable<Move> CalculateAllMoves(int ply);
 
-        public virtual Move IsLegalMove(Move move)
+        public virtual Move IsLegalMove(Move move, int ply)
         {
-            foreach (Move m in CalculateAllMoves())
+            foreach (Move m in CalculateAllMoves(ply))
             {
                 if (move == m)
                     return m;
