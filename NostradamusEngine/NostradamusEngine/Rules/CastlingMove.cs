@@ -27,11 +27,24 @@ namespace NostradamusEngine.Rules
             DoForOne(_rook,_rookfrom,_rookto);
         }
 
+        public override void Undo()
+        {
+            UndoForOne(Piece,From,To);
+            UndoForOne(_rook,_rookfrom,_rookto);
+        }
+
         public void DoForOne(Piece piece, Square from, Square to)
         {
             from.Piece = null;
             to.Piece = piece;
             to.Piece.Square = To;
+        }
+
+        public void UndoForOne(Piece piece, Square from, Square to)
+        {
+            from.Piece = piece;
+            from.Piece.Square = from;
+            to.Piece = null;
         }
 
         public override string ToString()

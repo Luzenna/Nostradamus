@@ -12,9 +12,9 @@ namespace NostradamusEngine
 {
     public class ChessEngine
     {
-        private List<Move> moves;
-        private List<Piece> pieces;
-        private List<Piece> captured;
+        private readonly List<Move> moves;
+        private readonly List<Piece> pieces;
+        private readonly List<Piece> captured;
 
         public ChessEngine()
         {
@@ -80,7 +80,10 @@ namespace NostradamusEngine
             return toMove == Color.White ? Color.Black : Color.White;
         }
 
-
+        public bool SquareIsCoveredByOpponentPiece(Color color,Square square)
+        {
+            return pieces.Where(x => x.Color != color).Any(opponentPiece => opponentPiece.FindCoveredSquares().Count(x => x.File==square.File && x.Rank==square.Rank) > 0);
+        }
 
         // Checks wether a move is valid or if one is in check after the move.
         private Boolean PlayingIsInCheck

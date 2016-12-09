@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Pieces\Color.cs" />
     <Compile Include="Rules\CastlingMove.cs" />
+    <Compile Include="Rules\EnPassantMove.cs" />
     <Compile Include="Set\Square.cs" />
     <Compile Include="Set\Board.cs" />
     <Compile Include="IO\FENParser.cs" />

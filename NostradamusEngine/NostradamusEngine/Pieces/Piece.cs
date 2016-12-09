@@ -12,7 +12,8 @@ namespace NostradamusEngine.Pieces
     {
         // Ugly
         public readonly  List<Move> Moves;
-        public Piece(Color color, Square square, ChessEngine game)
+
+        protected Piece(Color color, Square square, ChessEngine game)
         {
             Color = color;
             Square = square;
@@ -46,6 +47,8 @@ namespace NostradamusEngine.Pieces
             get;
         }
 
+        public abstract IEnumerable<Square> FindCoveredSquares();
+
         public abstract IEnumerable<Move> CalculateAllMoves();
 
         public virtual Move IsLegalMove(Move move)
@@ -57,7 +60,6 @@ namespace NostradamusEngine.Pieces
             }
             return null;
         }
-
 
         public Square Square
         {

@@ -33,9 +33,24 @@ namespace NostradamusEngine.Pieces
             }
         }
 
+        public override IEnumerable<Square> FindCoveredSquares()
+        {
+            var squares = new List<Square>();
+
+            // Raycast +1 +1
+            squares.AddRange(FindCoveredSquaresInDirection(1, 0));
+            // Raycast +1 -1
+            squares.AddRange(FindCoveredSquaresInDirection(0, 1));
+            // Raycast -1 -1
+            squares.AddRange(FindCoveredSquaresInDirection(-1, 0));
+            // Raycast -1 +1
+            squares.AddRange(FindCoveredSquaresInDirection(0, -1));
+            return squares;
+        }
+
         public override IEnumerable<Rules.Move> CalculateAllMoves()
         {
-            List<Rules.Move> allMoves = new List<Move>();
+            var allMoves = new List<Move>();
 
             // Raycast +1 +1
             allMoves.AddRange(CalculateMoveInDirection(1, 0));

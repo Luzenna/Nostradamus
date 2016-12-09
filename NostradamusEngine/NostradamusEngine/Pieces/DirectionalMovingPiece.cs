@@ -13,7 +13,29 @@ namespace NostradamusEngine.Pieces
         protected DirectionalMovingPiece(Color color, Square square, ChessEngine game )
             :base(color,square,game)
         { }
-        
+
+        protected IEnumerable<Square> FindCoveredSquaresInDirection(int fileAddition, int rankAddition)
+        {
+            var stoppedSearching = false;
+            int fileAdder = fileAddition, rankAdder = rankAddition;
+            while (!stoppedSearching)
+            {
+                var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
+                // Blocked
+                if (squareToCheck == null)
+                {
+                    stoppedSearching = true;
+                }
+                else if (squareToCheck.Piece == null)
+                {
+                    yield return squareToCheck;
+                }
+                else if (squareToCheck.Piece != null)
+                    stoppedSearching = true;
+                fileAdder += fileAddition;
+                rankAdder += rankAddition;
+            }
+        }
 
         protected IEnumerable<Rules.Move> CalculateMoveInDirection(Int32 fileAddition, Int32 rankAddition)
         {

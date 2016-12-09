@@ -34,6 +34,20 @@ namespace NostradamusEngine.Pieces
             }
         }
 
+        public override IEnumerable<Square> FindCoveredSquares()
+        {
+            var allMoves = new List<Square>();
+            allMoves.AddRange(CheckIfSquareIsCovered(2, 1));
+            allMoves.AddRange(CheckIfSquareIsCovered(-2, 1));
+            allMoves.AddRange(CheckIfSquareIsCovered(2, -1));
+            allMoves.AddRange(CheckIfSquareIsCovered(-2, -1));
+            allMoves.AddRange(CheckIfSquareIsCovered(1, 2));
+            allMoves.AddRange(CheckIfSquareIsCovered(1, -2));
+            allMoves.AddRange(CheckIfSquareIsCovered(-1, 2));
+            allMoves.AddRange(CheckIfSquareIsCovered(-1, -2));
+            return allMoves;
+        }
+
         public override IEnumerable<Rules.Move> CalculateAllMoves()
         {
             List<Move> allMoves = new List<Move>();
@@ -47,6 +61,17 @@ namespace NostradamusEngine.Pieces
             allMoves.AddRange(CheckSquare(-1, -2));
             return allMoves;
             
+        }
+
+        private IEnumerable<Square> CheckIfSquareIsCovered(int fileAdder, int rankAdder)
+        {
+            var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
+            if (squareToCheck == null)
+                yield break;
+            if (squareToCheck.Piece == null)
+            {
+                yield return Square;
+            }
         }
 
         private IEnumerable<Rules.Move> CheckSquare(Int32 fileAdder, Int32 rankAdder)
