@@ -91,7 +91,7 @@ namespace NostradamusEngine.Pieces
             var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
             if (squareToCheck == null)
                 yield break;
-            if (squareToCheck.Piece == null)
+            if (squareToCheck.Piece == null || squareToCheck.Piece.Color == Color)
             {
                 yield return squareToCheck;
             }

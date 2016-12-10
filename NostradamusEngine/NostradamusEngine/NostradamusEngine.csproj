@@ -49,6 +49,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Evaluators\GameEvaluation.cs" />
+    <Compile Include="Evaluators\IEvaluator.cs" />
+    <Compile Include="Evaluators\SimpleEvaluator.cs" />
     <Compile Include="Pieces\Color.cs" />
     <Compile Include="Rules\CastlingMove.cs" />
     <Compile Include="Rules\EnPassantMove.cs" />

@@ -40,9 +40,9 @@ namespace NostradamusEngine.Pieces
         public override IEnumerable<Square> FindCoveredSquares()
         {
             var square = Game.Board[Square.File + 1, Square.Rank + MoveForward];
-            if (square != null && square.Piece == null) yield return square;
+            if (square != null && (square.Piece == null || square.Piece.Color == Color)) yield return square;
             square = Game.Board[Square.File - 1, Square.Rank + MoveForward];
-            if (square != null && square.Piece == null) yield return square;
+            if (square != null && (square.Piece == null || square.Piece.Color == Color)) yield return square;
         }
 
         //What a mess

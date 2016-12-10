@@ -3,15 +3,18 @@ using NostradamusEngine.Pieces;
 using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Evaluators;
 using NostradamusEngine.Set;
 
 namespace NostradamusEngine
 {
     public class ChessEngine
     {
+        private readonly IEvaluator _evaluator;
         private readonly List<Move> moves;
         private readonly List<Piece> pieces;
         private readonly List<Piece> captured;
@@ -20,8 +23,9 @@ namespace NostradamusEngine
         private static readonly log4net.ILog Log =
     log4net.LogManager.GetLogger(typeof(ChessEngine));
 
-        public ChessEngine()
+        public ChessEngine(IEvaluator evaluator)
         {
+            _evaluator = evaluator;
             Board = new Board();
             moves = new List<Move>();
             pieces = new List<Piece>();
@@ -54,20 +58,21 @@ namespace NostradamusEngine
                     captured.Add(correctMove.Capture);
                     correctMove.Capture.Square = null;
                 }
-                if (PlayingIsInCheck)
+                if (PlayingIsInCheck(ToMove))
                 {
                     _currentPly--;
                     correctMove.Undo();
                     moves.Remove(correctMove);
                     return;
                 }
-                ToMove = SwitchColor(ToMove);
                 var pawn = correctMove.To.Piece as Pawn;
                 if (pawn != null && pawn.IsPromoted)
                 {
                     PromotionHappened = true;
                     PromotedPawn = pawn;
                 }
+                _evaluator.EvaluateGame(this, ToMove);
+                ToMove = ColorHelper.Reverse(ToMove);
             }
         }
 
@@ -81,38 +86,58 @@ namespace NostradamusEngine
             return (King) GetPiecesOfType<King>(color).First();
         }
 
-        private Color SwitchColor(Color toMove)
+        public bool SquareIsCoveredByOpponentPiece(Color color, Square square, bool checkCheck=false)
         {
-            return toMove == Color.White ? Color.Black : Color.White;
-        }
-
-        public bool SquareIsCoveredByOpponentPiece(Color color, Square square)
-        {
-            Log.Debug($"Check if square {square} is covered.");
+            Log.Debug($"Check if square {square} is covered by opponent to {color} pieces.");
             return
                 pieces.Where(x => x.Color != color)
                     .Any(
                         opponentPiece =>
                         {
-                            Log.Debug($" - Piece {opponentPiece}");
+                            Log.Debug($" - Piece {opponentPiece} on {opponentPiece.Square} covers");
                             return
                                 opponentPiece.FindCoveredSquares()
                                     .Count(x =>
                                     {
-                                        Log.Debug($" -- Square : {x}");
-                                        return x.File == square.File && x.Rank == square.Rank;
+                                        var debugInfo = x.Piece?.ToString() ?? "<None>";
+                                        Log.Debug($" -- Square : {x} : {debugInfo}");
+                                        var value = x.File == square.File && x.Rank == square.Rank;
+                                        return value;
                                     }) > 0;
                         });
         }
 
-        // Checks wether a move is valid or if one is in check after the move.
-        private Boolean PlayingIsInCheck
+        public bool KingIsInCheck(Color color)
         {
-            get
+            var king = GetKing(ColorHelper.Reverse(color));
+            // give moving color one extra move, can anyone capture the king?
+            return pieces.Where(x => x.Color == color).ToList()
+                .Any(piece => piece.CalculateAllMoves(-1).Count(move => move.Capture == king)>0);
+        }
+
+        public IEnumerable<Move> GetAllValidMoves(Color color)
+        {
+            var clock = new Stopwatch();
+            clock.Start();
+            foreach (var piece in pieces.Where(x => x.Color == color))
             {
-                var playingKing = GetKing(ToMove);
-                return SquareIsCoveredByOpponentPiece(Opponent, playingKing.Square);
+                foreach (var move in piece.CalculateAllMoves(_currentPly + 1))
+                {
+                    Move(move);
+                    if (!PlayingIsInCheck(Opponent))
+                        yield return move;
+
+                }
             }
+            clock.Stop();
+            Log.Info($"GetAllValidMoves took {clock.ElapsedMilliseconds} ms");
+        }
+
+        // Checks wether a move is valid or if one is in check after the move.
+        private Boolean PlayingIsInCheck(Color color)
+        {
+                var playingKing = GetKing(color);
+                return SquareIsCoveredByOpponentPiece(color, playingKing.Square,true);
         }
 
         // Supposed to check for checks and other stuff.
@@ -131,14 +156,7 @@ namespace NostradamusEngine
             set;
         }
 
-        public Color Opponent
-        {
-            get
-            {
-                if (ToMove == Color.White) return Color.Black;
-                return Color.White;
-            }
-        }
+        public Color Opponent => ColorHelper.Reverse(ToMove);
 
         public Board Board { get; }
 
@@ -153,6 +171,8 @@ namespace NostradamusEngine
             get;
             private set;
         }
+
+
 
     }
 }

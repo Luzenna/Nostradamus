@@ -10,6 +10,9 @@ namespace NostradamusEngine.Pieces
 {
     public abstract class DirectionalMovingPiece : Piece
     {
+        private static readonly log4net.ILog Log =
+log4net.LogManager.GetLogger(typeof(DirectionalMovingPiece));
+
         protected DirectionalMovingPiece(Color color, Square square, ChessEngine game )
             :base(color,square,game)
         { }
@@ -21,17 +24,24 @@ namespace NostradamusEngine.Pieces
             while (!stoppedSearching)
             {
                 var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
-                // Blocked
                 if (squareToCheck == null)
                 {
                     stoppedSearching = true;
                 }
-                else if (squareToCheck.Piece == null)
+                else if (squareToCheck.Piece == null )
                 {
                     yield return squareToCheck;
                 }
+                else if (squareToCheck.Piece.Color == Color)
+                {
+                    yield return squareToCheck;
+                    stoppedSearching=true;
+                }
                 else if (squareToCheck.Piece != null)
+                {
+                    yield return squareToCheck;
                     stoppedSearching = true;
+                }
                 fileAdder += fileAddition;
                 rankAdder += rankAddition;
             }

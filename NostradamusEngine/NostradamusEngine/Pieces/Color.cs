@@ -11,4 +11,13 @@ namespace NostradamusEngine.Pieces
         White,
         Black
     }
+
+    public static class ColorHelper
+    {
+        public static Color Reverse(Color color)
+        {
+            return color == Color.White ? Color.Black : Color.White;
+        }
+    }
+
 }
