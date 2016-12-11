@@ -27,8 +27,8 @@ namespace NostradamusEngine.Pieces
         {
             if (m.Capture!=null)
                 Board.RemovePiece(m.To,m.Capture);
-            Board.SetPiece(m.To,this);
             Board.RemovePiece(m.From, this);
+            Board.SetPiece(m.To,this);
             Moves.Add(m);
         }
 
@@ -70,7 +70,7 @@ namespace NostradamusEngine.Pieces
             return null;
         }
 
-        public Square Square
+        public ISquare Square
         {
             get;
             set;

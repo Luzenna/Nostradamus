@@ -54,6 +54,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Moves\NormalMove.cs" />
+    <Compile Include="SimpleBoard\PiecesOnBoardTest.cs" />
     <Compile Include="SearchTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

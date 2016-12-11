@@ -50,32 +50,41 @@ log4net.LogManager.GetLogger(typeof(Board));
 
         public Piece GetPieceOn(ISquare square)
         {
-            var piece = _squares[square.File, square.Rank]?.Piece;
+            var piece = GetSquare(square.File, square.Rank)?.Piece;
             return piece;
         }
 
         public void SetPiece(ISquare square, Piece piece)
         {
-            var internalSquare = _squares[square.File, square.Rank];
-            if (internalSquare == null) return;
+            pieces.Add(piece);
+            var internalSquare = GetSquare(square.File, square.Rank);
+            if (internalSquare == null) throw new IllegalSquareException();
             piece.Square = internalSquare;
             internalSquare.Piece = piece;
         }
 
         public void RemovePiece(ISquare square, Piece piece)
         {
-            var internalSquare = _squares[square.File, square.Rank];
-            if (internalSquare == null) return;
+            pieces.Remove(piece);
+            var internalSquare = GetSquare(square.File, square.Rank);
+            if (internalSquare == null) throw new IllegalSquareException();
             piece.Square = null;
             internalSquare.Piece = null;
         }
 
         public SquareStatus GetSquareStatus(ISquare square)
         {
-            var internalSquare = _squares[square.File, square.Rank];
+            var internalSquare = GetSquare(square.File, square.Rank);
             if (internalSquare == null) return SquareStatus.Illegal;
             else if (internalSquare.Piece!=null) return SquareStatus.Occupied;
             return SquareStatus.Empty;
+        }
+
+        private Square GetSquare(int f, int r)
+        {
+                if (f >= files || f < 0) return null;
+                if (r >= ranks || r < 0) return null;
+                return _squares[f, r];
         }
 
         public bool PiecesCoverOneOrMore(Color color, IEnumerable<ISquare> squares)
@@ -85,7 +94,7 @@ log4net.LogManager.GetLogger(typeof(Board));
 
         private Square ToInternalSquare(ISquare square)
         {
-            return _squares[square.File, square.Rank];
+            return GetSquare(square.File, square.Rank);
         }
 
         public IEnumerable<NormalMove> GetAllMovesFor(Color color, int currentPly)
@@ -107,7 +116,7 @@ log4net.LogManager.GetLogger(typeof(Board));
             }
         }
 
-        private bool SquareIsCoveredByOpponentPiece(Color color, Square square, bool checkCheck = false)
+        private bool SquareIsCoveredByOpponentPiece(Color color, ISquare square, bool checkCheck = false)
         {
             return
                 pieces.Where(x => x.Color != color)
@@ -144,5 +153,9 @@ log4net.LogManager.GetLogger(typeof(Board));
 
         public int Ranks => ranks;
 
+    }
+
+    public class IllegalSquareException : Exception
+    {
     }
 }
