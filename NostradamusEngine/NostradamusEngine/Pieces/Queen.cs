@@ -1,42 +1,31 @@
-﻿using NostradamusEngine.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Moves;
 using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine.Pieces
 {
     public class Queen : DirectionalMovingPiece
     {
 
-        public Queen(Color color, Square square, ChessEngine game)
-            : base(color, square, game)
+        public Queen(Color color, IBoard board)
+            : base(color, board)
         {
 
         }
 
+        
+        public override string FullName => "Queen";
 
-        public override String FullName
-        {
-            get
-            {
-                return "Queen";
-            }
-        }
+        public override String ShortName => "Q";
 
-        public override String ShortName
+        public override IEnumerable<ISquare> FindCoveredSquares()
         {
-            get
-            {
-                return "Q";
-            }
-        }
-
-        public override IEnumerable<Square> FindCoveredSquares()
-        {
-            var allMoves = new List<Square>();
+            var allMoves = new List<ISquare>();
 
             // Raycast +1 +1
             allMoves.AddRange(FindCoveredSquaresInDirection(1, 0));
@@ -57,9 +46,9 @@ namespace NostradamusEngine.Pieces
             return allMoves;
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves(int ply)
+        public override IEnumerable<NormalMove> CalculateAllMoves(int ply)
         {
-            List<Rules.Move> allMoves = new List<Move>();
+            List<NormalMove> allMoves = new List<NormalMove>();
 
             // Raycast +1 +1
             allMoves.AddRange(CalculateMoveInDirection(1, 0, ply));

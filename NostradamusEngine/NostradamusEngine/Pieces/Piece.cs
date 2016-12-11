@@ -1,61 +1,70 @@
-﻿using NostradamusEngine.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Moves;
 using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine.Pieces
 {
     public abstract class Piece
     {
         // Ugly
-        public readonly  List<Move> Moves;
+        public readonly  List<NormalMove> Moves;
+        public readonly List<NormalMove> undoedMoves = new List<NormalMove>();
+        protected readonly IBoard Board;
 
-        protected Piece(Color color, Square square, ChessEngine game)
+        protected Piece(Color color, IBoard board)
         {
             Color = color;
-            Square = square;
-            Game = game;
-            Moves = new List<Move>();
+            Board = board;
+            Moves = new List<NormalMove>();
         }
 
-        public void Move(Move m)
+        public virtual void Move(NormalMove m)
         {
+            if (m.Capture!=null)
+                Board.RemovePiece(m.To,m.Capture);
+            Board.SetPiece(m.To,this);
+            Board.RemovePiece(m.From, this);
             Moves.Add(m);
         }
 
-        public void UndoMove(Move m)
+        public virtual void UndoMove(NormalMove m)
         {
-            Moves.Remove(m);
-        }
-
-        public ChessEngine Game
-        {
-            get;
-            private set;
-        }
-
-        public abstract String FullName
-        {
-            get;
-        }
-
-        public abstract String ShortName
-        {
-            get;
-        }
-
-        public abstract IEnumerable<Square> FindCoveredSquares();
-
-        public abstract IEnumerable<Move> CalculateAllMoves(int ply);
-
-        public virtual Move IsLegalMove(Move move, int ply)
-        {
-            foreach (Move m in CalculateAllMoves(ply))
+            Board.RemovePiece(m.To, this);
+            if (m.Capture != null)
             {
-                if (move == m)
+                Board.SetPiece(m.To,m.Capture);
+            }
+            Board.SetPiece(m.From,this);
+            Moves.Remove(m);
+            undoedMoves.Add(m);
+        }
+
+
+
+        public abstract string FullName
+        {
+            get;
+        }
+
+        public abstract string ShortName
+        {
+            get;
+        }
+
+        public abstract IEnumerable<ISquare> FindCoveredSquares();
+
+        public abstract IEnumerable<NormalMove> CalculateAllMoves(int ply);
+
+        public virtual NormalMove IsLegalMove(NormalMove normalMove, int ply)
+        {
+            foreach (var m in CalculateAllMoves(ply))
+            {
+                if (normalMove == m)
                     return m;
             }
             return null;

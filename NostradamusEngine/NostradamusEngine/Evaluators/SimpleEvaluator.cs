@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NostradamusEngine.Pieces;
+using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Evaluators
 {
@@ -13,19 +14,13 @@ namespace NostradamusEngine.Evaluators
         private static readonly log4net.ILog Log =
     log4net.LogManager.GetLogger(typeof(SimpleEvaluator));
 
-        public GameEvaluation EvaluateGame(ChessEngine game, Color lastMover)
+        public GameEvaluation EvaluateGame(IBoard board, Color lastMover)
         {
-            var clock = new Stopwatch();
-            clock.Start();
             var eval = new GameEvaluation()
             {
-                IsCheck = game.KingIsInCheck(lastMover),
-                NumberOfValidMoves = game.GetAllValidMoves(ColorHelper.Reverse(lastMover)).ToList().Count
+                IsCheck = board.PlayingIsInCheck(lastMover),
+                NumberOfValidMoves = board.GetAllMovesFor(ColorHelper.Reverse(lastMover),0).ToList().Count
             };
-            clock.Stop();
-            Log.Info($"Evaluation after {lastMover}'s move (took {clock.ElapsedMilliseconds} ms) :");
-            Log.Info(eval);
-
             return eval;
         }
 

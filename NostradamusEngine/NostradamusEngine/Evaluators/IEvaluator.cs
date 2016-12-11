@@ -10,7 +10,7 @@ namespace NostradamusEngine.Evaluators
 {
     public interface IEvaluator
     {
-        GameEvaluation EvaluateGame(ChessEngine game, Color lastMover);
+        GameEvaluation EvaluateGame(IBoard board, Color lastMover);
 
     }
 }

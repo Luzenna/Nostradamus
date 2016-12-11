@@ -1,9 +1,5 @@
-﻿using NostradamusEngine.Rules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using NostradamusEngine.Moves;
 using NostradamusEngine.Set;
 
 namespace NostradamusEngine.Pieces
@@ -11,32 +7,20 @@ namespace NostradamusEngine.Pieces
     public class Knight : Piece
     {
 
-        public Knight(Color color, Square square, ChessEngine game)
-            : base(color, square, game)
+        public Knight(Color color, IBoard board)
+            : base(color, board)
         {
 
         }
 
 
-        public override String FullName
-        {
-            get
-            {
-                return "Knight";
-            }
-        }
+        public override string FullName => "Knight";
 
-        public override String ShortName
-        {
-            get
-            {
-                return "N";
-            }
-        }
+        public override string ShortName => "N";
 
-        public override IEnumerable<Square> FindCoveredSquares()
+        public override IEnumerable<ISquare> FindCoveredSquares()
         {
-            var allMoves = new List<Square>();
+            var allMoves = new List<ISquare>();
             allMoves.AddRange(CheckIfSquareIsCovered(2, 1));
             allMoves.AddRange(CheckIfSquareIsCovered(-2, 1));
             allMoves.AddRange(CheckIfSquareIsCovered(2, -1));
@@ -48,44 +32,44 @@ namespace NostradamusEngine.Pieces
             return allMoves;
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves(int ply)
+        public override IEnumerable<NormalMove> CalculateAllMoves(int ply)
         {
-            List<Move> allMoves = new List<Move>();
-            allMoves.AddRange(CheckSquare(2, 1, ply));
-            allMoves.AddRange(CheckSquare(-2, 1, ply));
-            allMoves.AddRange(CheckSquare(2, -1, ply));
-            allMoves.AddRange(CheckSquare(-2, -1, ply));
-            allMoves.AddRange(CheckSquare(1, 2, ply));
-            allMoves.AddRange(CheckSquare(1, -2, ply));
-            allMoves.AddRange(CheckSquare(-1, 2, ply));
-            allMoves.AddRange(CheckSquare(-1, -2, ply));
+            List<NormalMove> allMoves = new List<NormalMove>();
+            allMoves.AddRange(CheckMove(2, 1, ply));
+            allMoves.AddRange(CheckMove(-2, 1, ply));
+            allMoves.AddRange(CheckMove(2, -1, ply));
+            allMoves.AddRange(CheckMove(-2, -1, ply));
+            allMoves.AddRange(CheckMove(1, 2, ply));
+            allMoves.AddRange(CheckMove(1, -2, ply));
+            allMoves.AddRange(CheckMove(-1, 2, ply));
+            allMoves.AddRange(CheckMove(-1, -2, ply));
             return allMoves;
             
         }
 
-        private IEnumerable<Square> CheckIfSquareIsCovered(int fileAdder, int rankAdder)
+        private IEnumerable<ISquare> CheckIfSquareIsCovered(int fileAdder, int rankAdder)
         {
-            var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
-            if (squareToCheck == null)
+            var squareToCheck = new BareSquare(Square.File + fileAdder, Square.Rank + rankAdder);
+            if (Board.GetSquareStatus(squareToCheck) == SquareStatus.Illegal)
                 yield break;
-            if (squareToCheck.Piece == null || squareToCheck.Piece.Color==Color)
-            {
-                yield return squareToCheck;
-            }
+            else yield return squareToCheck;
         }
 
-        private IEnumerable<Rules.Move> CheckSquare(Int32 fileAdder, Int32 rankAdder, int ply)
+        private IEnumerable<NormalMove> CheckMove(int fileAdder, int rankAdder, int ply)
         {
-            var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
-            if (squareToCheck == null)
+            var squareToCheck = new BareSquare(Square.File + fileAdder, Square.Rank + rankAdder);
+            var squareStatus = Board.GetSquareStatus(squareToCheck);
+            if (squareStatus == SquareStatus.Illegal)
                 yield break;
-            if (squareToCheck.Piece == null)
+            if (squareStatus == SquareStatus.Empty)
             {
-                yield return new Move(this, Square, squareToCheck, null,ply);
+                yield return new NormalMove(this, Square, squareToCheck, null, ply);
             }
-            else if (squareToCheck.Piece.Color != this.Color)
+            else if (squareStatus == SquareStatus.Occupied)
             {
-                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece,ply);
+                var piece = Board.GetPieceOn(squareToCheck);
+                if (piece.Color != Color)
+                    yield return new NormalMove(this, Square, squareToCheck, piece, ply);
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using NostradamusEngine.Pieces;
 
-namespace NostradamusEngine.Set
+namespace NostradamusEngine.Set.SimpleBoard
 {
-    public class Square
+    public class Square : ISquare
     {
         private Boolean isWhite;
         private Int32 file, rank;
@@ -16,7 +16,7 @@ namespace NostradamusEngine.Set
             this.file = file;
         }
 
-        public Int32 Rank
+        public int Rank
         {
             get
             {
@@ -24,7 +24,7 @@ namespace NostradamusEngine.Set
             }
         }
 
-        public Int32 File
+        public int File
         {
             get
             {

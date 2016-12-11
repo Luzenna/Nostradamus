@@ -1,18 +1,19 @@
-﻿using NostradamusEngine.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Moves;
 using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine.Pieces
 {
     public class Bishop : DirectionalMovingPiece
     {
 
-        public Bishop(Color color, Square square, ChessEngine game)
-            : base(color, square, game)
+        public Bishop(Color color, IBoard board)
+            : base(color, board)
         {
 
         }
@@ -25,17 +26,11 @@ namespace NostradamusEngine.Pieces
             }
         }
 
-        public override String ShortName
-        {
-            get
-            {
-                return "B";
-            }
-        }
+        public override string ShortName => "B";
 
-        public override IEnumerable<Square> FindCoveredSquares()
+        public override IEnumerable<ISquare> FindCoveredSquares()
         {
-            List<Square> allMoves = new List<Square>();
+            var allMoves = new List<ISquare>();
 
             // Raycast +1 +1
             allMoves.AddRange(FindCoveredSquaresInDirection(1, 1));
@@ -48,9 +43,9 @@ namespace NostradamusEngine.Pieces
             return allMoves;
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves(int ply)
+        public override IEnumerable<NormalMove> CalculateAllMoves(int ply)
         {
-            List<Rules.Move> allMoves = new List<Move>();
+            List<NormalMove> allMoves = new List<NormalMove>();
 
             // Raycast +1 +1
             allMoves.AddRange(CalculateMoveInDirection(1, 1,ply));
