@@ -1,62 +1,83 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Moves;
+using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine.Pieces
 {
     public abstract class Piece
     {
-        
-        public Piece(Boolean isWhite, Square square, ChessEngine game)
+        // Ugly
+        public readonly  List<NormalMove> Moves;
+        public readonly List<NormalMove> undoedMoves = new List<NormalMove>();
+        protected readonly IBoard Board;
+
+        protected Piece(Color color, IBoard board)
         {
-            IsWhite = isWhite;
-            Square = square;
-            Game = game;
+            Color = color;
+            Board = board;
+            Moves = new List<NormalMove>();
         }
 
-        public ChessEngine Game
+        public virtual void Move(NormalMove m)
         {
-            get;
-            private set;
+            if (m.Capture!=null)
+                Board.RemovePiece(m.To,m.Capture);
+            Board.RemovePiece(m.From, this);
+            Board.SetPiece(m.To,this);
+            Moves.Add(m);
         }
 
-        public abstract String FullName
+        public virtual void UndoMove(NormalMove m)
         {
-            get;
-        }
-
-        public abstract String ShortName
-        {
-            get;
-        }
-
-        public abstract IEnumerable<Move> CalculateAllMoves();
-
-        public virtual Boolean IsLegalMove(Move move)
-        {
-            foreach (Move m in CalculateAllMoves())
+            Board.RemovePiece(m.To, this);
+            if (m.Capture != null)
             {
-                if (move == m)
-                    return true;
+                Board.SetPiece(m.To,m.Capture);
             }
-            return false;
+            Board.SetPiece(m.From,this);
+            Moves.Remove(m);
+            undoedMoves.Add(m);
         }
 
-        public Boolean IsWhite
+
+
+        public abstract string FullName
         {
             get;
-            private set;
         }
 
-        public Square Square
+        public abstract string ShortName
+        {
+            get;
+        }
+
+        public abstract IEnumerable<ISquare> FindCoveredSquares();
+
+        public abstract IEnumerable<NormalMove> CalculateAllMoves(int ply);
+
+        public virtual NormalMove IsLegalMove(NormalMove normalMove, int ply)
+        {
+            foreach (var m in CalculateAllMoves(ply))
+            {
+                if (normalMove == m)
+                    return m;
+            }
+            return null;
+        }
+
+        public ISquare Square
         {
             get;
             set;
         }
+
+        public Color Color { get; private set; }
+
     }
 
 }

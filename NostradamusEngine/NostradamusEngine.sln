@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NostradamusEngine", "NostradamusEngine\NostradamusEngine.csproj", "{47EB06B1-DB05-4D4F-9079-8EC4036EC028}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NostradamusTest", "..\NostradamusTest\NostradamusTest.csproj", "{104858C2-3DB6-44E8-9D60-D261AB0340A8}"
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -15,6 +20,10 @@ Global
 		{47EB06B1-DB05-4D4F-9079-8EC4036EC028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47EB06B1-DB05-4D4F-9079-8EC4036EC028}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47EB06B1-DB05-4D4F-9079-8EC4036EC028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104858C2-3DB6-44E8-9D60-D261AB0340A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104858C2-3DB6-44E8-9D60-D261AB0340A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104858C2-3DB6-44E8-9D60-D261AB0340A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104858C2-3DB6-44E8-9D60-D261AB0340A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

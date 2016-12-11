@@ -5,16 +5,16 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using NostradamusEngine.Board;
+using NostradamusEngine.Moves;
 using NostradamusEngine.Pieces;
-using NostradamusEngine.Rules;
+using Color = System.Windows.Media.Color;
 
 namespace NostradamusEngine.WpfGui
 {
     
     /// <summary>
     /// First version of the board where all logic happens in this view. Lazyness prevails thus far!
-    /// ToDo: Move to a MVC or MVVM design pattern. This class will be a pain to work with unless a design pattern is picked! wow. single class. much code. such lazy. wow.
+    /// ToDo: NormalMove to a MVC or MVVM design pattern. This class will be a pain to work with unless a design pattern is picked! wow. single class. much code. such lazy. wow.
     /// </summary>
     public partial class Board
     {
@@ -156,15 +156,7 @@ namespace NostradamusEngine.WpfGui
                     }
 
                     // ToDo: Find another method of adding the pieces. This is ugly.
-                    var pieceTypeName = "NostradamusEngine.WpfGui.Pieces.";
-                    if (piece.IsWhite)
-                    {
-                        pieceTypeName += "White";
-                    }
-                    else
-                    {
-                        pieceTypeName += "Black";
-                    }
+                    var pieceTypeName = $"NostradamusEngine.WpfGui.Pieces.{piece.Color}";
                     pieceTypeName += piece.FullName;
 
                     // Nooo! Reflection :( I MUST FIND ANOTHER WAY
@@ -266,9 +258,9 @@ namespace NostradamusEngine.WpfGui
                 // Check if tosquare is valid
                 if (toSquare != null)
                 {
-                    _game.Move(new Move(piece, piece.Square, toSquare, toSquare.Piece));
+                    _game.Move(new NormalMove(piece, piece.Square, toSquare, toSquare.Piece,0));
                     if (_game.PromotionHappened)
-                        _game.PromotedPawn.Square.Piece = new Queen(_game.PromotedPawn.IsWhite, _game.PromotedPawn.Square, _game);
+                        _game.PromotedPawn.Square.Piece = new Queen(_game.PromotedPawn.Color, _game.PromotedPawn.Square, _game);
                 }
                 Update();
             }
