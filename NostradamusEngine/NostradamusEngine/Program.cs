@@ -5,15 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Evaluators;
+using NostradamusEngine.Pieces;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine
 {
     class Program
     {
+        private static readonly log4net.ILog Log =
+            log4net.LogManager.GetLogger(typeof(Program));
         [STAThread]
         static void Main(string[] args)
         {
-            var window = new Window
+            Log.Info("Starting Nostradamus");
+            var board = new Board();
+
+        var engine = new ChessEngine(new SimpleEvaluator(),board);
+            engine.LoadFEN("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
+            engine.Perft(8,Color.White);
+            /*var window = new Window
             {
                 Title = "Nostradamus WpfGui",
                 Content = new WpfGui.Main(),
@@ -21,7 +32,7 @@ namespace NostradamusEngine
                 Height = 800
             };
             window.ShowDialog();
-
+            */
             //SimpleGui gui = new SimpleGui();
             //while (gui.Update())
             //{

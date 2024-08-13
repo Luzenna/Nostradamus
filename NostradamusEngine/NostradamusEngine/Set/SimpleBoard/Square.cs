@@ -1,13 +1,9 @@
-﻿using NostradamusEngine.Pieces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using NostradamusEngine.Pieces;
 
-namespace NostradamusEngine.Board
+namespace NostradamusEngine.Set.SimpleBoard
 {
-    public class Square
+    public class Square : ISquare
     {
         private Boolean isWhite;
         private Int32 file, rank;
@@ -20,7 +16,7 @@ namespace NostradamusEngine.Board
             this.file = file;
         }
 
-        public Int32 Rank
+        public int Rank
         {
             get
             {
@@ -28,7 +24,7 @@ namespace NostradamusEngine.Board
             }
         }
 
-        public Int32 File
+        public int File
         {
             get
             {
@@ -56,14 +52,18 @@ namespace NostradamusEngine.Board
             }
         }
 
-        public String Name
+        public string Name
         {
             get
             {
-                char fileName = (char)(file + 97);
-                return String.Format("{0}{1}", fileName, rank);
+                var fileName = (char)(file + 97);
+                return $"{fileName}{rank+1}";
             }
         }
 
+        public override string ToString()
+        {
+            return $"Square.{Name}";
+        }
     }
 }

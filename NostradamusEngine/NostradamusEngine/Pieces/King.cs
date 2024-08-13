@@ -1,64 +1,168 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Moves;
+using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine.Pieces
 {
     public class King : Piece
     {
-        public King(Boolean isWhite, Square square, ChessEngine game)
-            : base(isWhite, square, game)
+        public bool CanCastleQueenSide { get; set; }
+        public bool CanCastleKingSide { get; set; }
+
+        public King(Color color, IBoard board)
+            : base(color, board)
         {
 
         }
 
-
-        public override String FullName
+        public override void Move(NormalMove m)
         {
-            get
+            var castling = m as CastlingMove;
+            if (castling !=null)
             {
-                return "King";
+                Castle(castling);
             }
+            else
+                base.Move(m);
         }
 
-        public override String ShortName
+        public override void UndoMove(NormalMove m)
         {
-            get
+            var castling = m as CastlingMove;
+            if (castling != null)
             {
-                return "K";
+                UndoCastle(castling);
             }
+            else 
+                base.UndoMove(m);
         }
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        private void UndoCastle(CastlingMove castling)
         {
-            List<Move> allMoves = new List<Move>();
-            allMoves.AddRange(CheckSquare(-1, -1));
-            allMoves.AddRange(CheckSquare(0, -1));
-            allMoves.AddRange(CheckSquare(1, -1));
-            allMoves.AddRange(CheckSquare(-1, 0));
-            allMoves.AddRange( CheckSquare(1, 0));
-            allMoves.AddRange(CheckSquare(-1, 1));
-            allMoves.AddRange(CheckSquare(0, 1));
-            allMoves.AddRange(CheckSquare(1, 1));
+            base.UndoMove(castling);
+            Board.SetPiece(castling.CastlingRookFrom,this);
+            Board.RemovePiece(castling.CastlingRookTo,this);
+        }
+
+        private void Castle(CastlingMove castling)
+        {
+            base.Move(castling);
+            Board.SetPiece(castling.CastlingRookTo, this);
+            Board.RemovePiece(castling.CastlingRookFrom, this);
+        }
+
+        public override string FullName => "King";
+
+        public override string ShortName => "K";
+
+        public override IEnumerable<ISquare> FindCoveredSquares()
+        {
+            var coveredSquares = new List<ISquare>();
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(-1, -1));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(0, -1));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(1, -1));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(-1, 0));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(1, 0));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(-1, 1));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(0, 1));
+            coveredSquares.AddRange(CheckIfSquaredIsCovered(1, 1));
+            return coveredSquares;
+        }
+
+        public override IEnumerable<NormalMove> CalculateAllMoves(int ply)
+        {
+            var allMoves = new List<NormalMove>();
+            allMoves.AddRange(CheckMove(-1, -1, ply));
+            allMoves.AddRange(CheckMove(0, -1, ply));
+            allMoves.AddRange(CheckMove(1, -1, ply));
+            allMoves.AddRange(CheckMove(-1, 0, ply));
+            allMoves.AddRange( CheckMove(1, 0, ply));
+            allMoves.AddRange(CheckMove(-1, 1, ply));
+            allMoves.AddRange(CheckMove(0, 1, ply));
+            allMoves.AddRange(CheckMove(1, 1, ply));
+            if (IsKingSideCastlePossible)
+                allMoves.Add(new CastlingMove(this,Square,new BareSquare(6,Square.Rank), Board.GetPieceOn(new BareSquare(7,Square.Rank)),new BareSquare(7,Square.Rank),new BareSquare(5,Square.Rank),ply));
+            if (IsQueenSideCastlePossible)
+                allMoves.Add(new CastlingMove(this, Square, new BareSquare(2, Square.Rank), Board.GetPieceOn(new BareSquare(0, Square.Rank)), new BareSquare(0, Square.Rank), new BareSquare(3, Square.Rank), ply));
             return allMoves;
         }
 
-        private IEnumerable<Rules.Move> CheckSquare(Int32 fileAdder, Int32 rankAdder)
+        private bool IsQueenSideCastlePossible
         {
-            var squareToCheck = Game.Board[Square.File + fileAdder, Square.Rank + rankAdder];
-            if (squareToCheck == null)
-                yield break;    
-            if (squareToCheck.Piece == null)
+            get
             {
-                yield return new Move(this, Square, squareToCheck, null);
+                if (!CanCastleQueenSide) return false;
+                if (Board.GetSquareStatus(new BareSquare(1, Square.Rank)) != SquareStatus.Empty ||
+                    Board.GetSquareStatus(new BareSquare(2, Square.Rank)) != SquareStatus.Empty ||
+                    Board.GetSquareStatus(new BareSquare(3, Square.Rank)) != SquareStatus.Empty)
+                {
+                    return false;
+                }
+                if (Board.GetPieceOn(Square).Moves.Count > 0 ||
+                    Board.GetPieceOn(new BareSquare(0, Square.Rank)).Moves.Count > 0)
+                {
+                    CanCastleQueenSide = false;
+                    return false;
+                }
+                if (Board.PiecesCoverOneOrMore(ColorHelper.Reverse(Color),new [] { new BareSquare(2,Square.Rank), new BareSquare(3, Square.Rank), new BareSquare(4, Square.Rank) }))
+                    return false;
+                return true;
             }
-            else if (squareToCheck.Piece.IsWhite != IsWhite)
+        }
+
+
+        private bool IsKingSideCastlePossible
+        {
+            get
             {
-                yield return new Move(this, Square, squareToCheck, squareToCheck.Piece);
+                if (!CanCastleKingSide) return false;
+                if (Board.GetSquareStatus(new BareSquare(6, Square.Rank)) != SquareStatus.Empty ||
+                    Board.GetSquareStatus(new BareSquare(5, Square.Rank)) != SquareStatus.Empty)
+                {
+                    return false;
+                }
+                if (Moves.Count > 0 ||
+                    Board.GetPieceOn(new BareSquare(7, Square.Rank)).Moves.Count > 0)
+                {
+                    CanCastleKingSide = false;
+                    return false;
+                }
+                if (Board.PiecesCoverOneOrMore(ColorHelper.Reverse(Color), new[] { new BareSquare(4, Square.Rank), new BareSquare(5, Square.Rank), new BareSquare(6, Square.Rank) }))
+                    return false;
+                return true;
+            }
+        }
+
+
+
+        private IEnumerable<ISquare> CheckIfSquaredIsCovered(int fileAdder, int rankAdder)
+        {
+            var squareToCheck = new BareSquare(Square.File + fileAdder, Square.Rank + rankAdder);
+            if (Board.GetSquareStatus(squareToCheck) == SquareStatus.Illegal)
+                yield break;
+            else yield return squareToCheck;
+        }
+
+        private IEnumerable<NormalMove> CheckMove(int fileAdder, int rankAdder, int ply)
+        {
+            var squareToCheck = new BareSquare(Square.File + fileAdder, Square.Rank + rankAdder);
+            var squareStatus = Board.GetSquareStatus(squareToCheck);
+            if (squareStatus == SquareStatus.Illegal)
+                yield break;    
+            if (squareStatus == SquareStatus.Empty)
+            {
+                yield return new NormalMove(this, Square, squareToCheck, null,ply);
+            }
+            else if (squareStatus==SquareStatus.Occupied)
+            {
+                var piece = Board.GetPieceOn(squareToCheck);
+                if (piece.Color!=Color)
+                    yield return new NormalMove(this, Square, squareToCheck, piece,ply);
             }
         }
     }

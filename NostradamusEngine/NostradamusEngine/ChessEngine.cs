@@ -1,95 +1,85 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.IO;
+﻿using NostradamusEngine.IO;
 using NostradamusEngine.Pieces;
-using NostradamusEngine.Rules;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Evaluators;
+using NostradamusEngine.Moves;
+using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine
 {
     public class ChessEngine
     {
-        private Table board;
-        private Castling whiteCastling, blackCastling;
-        private List<Move> moves;
+        private readonly IEvaluator _evaluator;
+        private readonly IBoard _board;
+        private readonly List<NormalMove> moves;
+        private int _currentPly = 0;
 
-        public ChessEngine()
+        private static readonly log4net.ILog Log =
+    log4net.LogManager.GetLogger(typeof(ChessEngine));
+
+        public ChessEngine(IEvaluator evaluator, IBoard board)
         {
-            board = new Table();
-            whiteCastling = new Castling();
-            blackCastling = new Castling();
-            moves = new List<Move>();
+            _evaluator = evaluator;
+            _board = board;
+            moves = new List<NormalMove>();
         }
 
         public void LoadFEN(String fen)
         {
-            FENParser.LoadFEN(this, fen);
+            FENParser.LoadFEN(this,_board, fen);
         }
 
-        public void Move(Move move)
+        public int Perft(int depth,Color color, NormalMove lastmove=null)
         {
-            PromotionHappened = false;
-            if (IsLegalMove(move))
+            if (depth == 0)
             {
-                moves.Add(move);
-                move.To.Piece = move.From.Piece;
-                move.From.Piece = null;
-                move.To.Piece.Square = move.To;
-                // Some of this logic is probably better to put in the piece classes.
-
-                IsWhiteToMove = !IsWhiteToMove;
-                var pawn = move.To.Piece as Pawn;
-                if (pawn != null && pawn.IsPromoted)
-                {
-                    PromotionHappened = true;
-                    PromotedPawn = pawn;
-                }
+                Log.Debug($"Came from {lastmove}");
+                return 0;
             }
+            var clock = new Stopwatch();
+            clock.Start();
+            var allValidMoves = _board.GetAllMovesFor(color,depth).ToList();
+            var subMoves = 0;
+            foreach (var move in allValidMoves)
+            {
+                move.Do();
+                subMoves+=Perft(depth-1,ColorHelper.Reverse(color),move);
+                move.Undo();
+            }
+            clock.Stop();
+            if (depth>4)
+                Log.Info($"Depth {depth} took {clock.ElapsedMilliseconds}.  Looked at {lastmove} {allValidMoves.Count} moves, which resulted in {subMoves} submoves");
+            return allValidMoves.Count+subMoves;
         }
+
+
 
         // Supposed to check for checks and other stuff.
-        private Boolean IsLegalMove(Move move)
+        private NormalMove IsLegalMove(NormalMove normalMove)
         {
             // uh-oh
-            if (move.Piece.IsWhite==IsWhiteToMove && move.Piece.IsLegalMove(move))
-                return true;
-            return false;
+            var correctMove = normalMove.Piece.IsLegalMove(normalMove,_currentPly);
+            if (normalMove.Piece.Color==ToMove && correctMove!=null)
+                return correctMove;
+            return null;
         }
 
-        public Boolean IsWhiteToMove
+        public Color ToMove
         {
             get;
             set;
         }
 
-        public Table Board
-        {
-            get
-            {
-                return board;
-            }
-        }
+        public Color Opponent => ColorHelper.Reverse(ToMove);
 
-        public Castling BlackCastling
-        {
-            get
-            {
-                return blackCastling;
-            }
-        }
 
-        public Castling WhiteCastling
-        {
-            get
-            {
-                return whiteCastling;
-            }
-        }
-
-        public Boolean PromotionHappened
+        public bool PromotionHappened
         {
             get;
             private set;
@@ -100,6 +90,8 @@ namespace NostradamusEngine
             get;
             private set;
         }
+
+
 
     }
 }

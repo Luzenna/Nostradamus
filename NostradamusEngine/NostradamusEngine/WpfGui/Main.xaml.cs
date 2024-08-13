@@ -1,5 +1,6 @@
 ﻿
 using System.Windows;
+using NostradamusEngine.Evaluators;
 
 namespace NostradamusEngine.WpfGui
 {
@@ -16,7 +17,7 @@ namespace NostradamusEngine.WpfGui
         {
             InitializeComponent();
             _control = new GuiControl(this, BoardControl);
-            _game = new ChessEngine();
+            _game = new ChessEngine(new SimpleEvaluator());
             _game.LoadFEN("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
             //_game.LoadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
             BoardControl.SetGame(_game, _control);

@@ -1,65 +1,55 @@
-﻿using NostradamusEngine.Board;
-using NostradamusEngine.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NostradamusEngine.Moves;
+using NostradamusEngine.Set;
+using NostradamusEngine.Set.SimpleBoard;
 
 namespace NostradamusEngine.Pieces
 {
     public class Rook : DirectionalMovingPiece
     {
 
-        public Rook(Boolean isWhite, Square square, ChessEngine game)
-            : base(isWhite, square, game)
+        public Rook(Color  color, IBoard board)
+            : base(color, board)
         {
 
         }
 
-        public override String FullName
-        {
-            get
-            {
-                return "Rook";
-            }
-        }
+        public override string FullName => "Rook";
 
-        public override String ShortName
-        {
-            get
-            {
-                return "R";
-            }
-        }
+        public override string ShortName => "R";
 
-        public override IEnumerable<Rules.Move> CalculateAllMoves()
+        public override IEnumerable<ISquare> FindCoveredSquares()
         {
-            List<Rules.Move> allMoves = new List<Move>();
+            var squares = new List<ISquare>();
 
             // Raycast +1 +1
-            allMoves.AddRange(CalculateMoveInDirection(1, 0));
+            squares.AddRange(FindCoveredSquaresInDirection(1, 0));
             // Raycast +1 -1
-            allMoves.AddRange(CalculateMoveInDirection(0, 1));
+            squares.AddRange(FindCoveredSquaresInDirection(0, 1));
             // Raycast -1 -1
-            allMoves.AddRange(CalculateMoveInDirection(-1, 0));
+            squares.AddRange(FindCoveredSquaresInDirection(-1, 0));
             // Raycast -1 +1
-            allMoves.AddRange(CalculateMoveInDirection(0, -1));
+            squares.AddRange(FindCoveredSquaresInDirection(0, -1));
+            return squares;
+        }
+
+        public override IEnumerable<NormalMove> CalculateAllMoves(int ply)
+        {
+            var allMoves = new List<NormalMove>();
+
+            // Raycast +1 +1
+            allMoves.AddRange(CalculateMoveInDirection(1, 0, ply));
+            // Raycast +1 -1
+            allMoves.AddRange(CalculateMoveInDirection(0, 1, ply));
+            // Raycast -1 -1
+            allMoves.AddRange(CalculateMoveInDirection(-1, 0, ply));
+            // Raycast -1 +1
+            allMoves.AddRange(CalculateMoveInDirection(0, -1, ply));
             return allMoves;
         }
-
-
-
-        public override bool IsLegalMove(Rules.Move move)
-        {
-            foreach (Move m in CalculateAllMoves())
-            {
-                if (move == m)
-                    return true;
-            }
-            return false;
-        }
-
-
     }
 }
